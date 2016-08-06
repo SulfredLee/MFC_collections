@@ -428,7 +428,7 @@ void CMainFrame::OnContextMenu(CWnd* pWnd, CPoint point)
 	pMenu->AppendSeparator();
 	pMenu->AppendODMenu(MF_CHECKED, new CMenuXPText(11, "Checked Item", AfxGetApp()->LoadIcon(IDI_ICON2)));
 	pMenu->AppendODMenu(0, new CMenuXPText(12, "Another Item", AfxGetApp()->LoadIcon(IDI_ICON3)));
-	pMenu->AppendODMenu(0, new CMenuXPText(13, "No Icon"));
+	pMenu->AppendODMenu(0, new CMenuXPText(13, "No Icon", NULL, RGB(255,0,0)));
 	pMenu->SetDefaultItem(12);
 
 	CMenuXP *pPopup = new CMenuXP;

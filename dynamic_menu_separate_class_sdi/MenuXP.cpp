@@ -194,7 +194,7 @@ void CMenuXP::DrawItem( LPDRAWITEMSTRUCT lpds )
 		BOOL bChecked  = lpds->itemState & ODS_CHECKED;
 
 		//draw the background first
-		DrawBackGround(&dc, rcItem, bSelected, bDisabled);
+		DrawBackGround(&dc, rcItem, bSelected, bDisabled, pItem->m_clrGB);
 		
 		//Draw the icon area for XP style
 		if (m_Style == STYLE_XP)
@@ -241,7 +241,7 @@ void CMenuXP::DrawItem( LPDRAWITEMSTRUCT lpds )
 }
 
 //draw background
-void CMenuXP::DrawBackGround(CDC *pDC, CRect rect, BOOL bSelected, BOOL bDisabled)
+void CMenuXP::DrawBackGround(CDC *pDC, CRect rect, BOOL bSelected, BOOL bDisabled, COLORREF clrGB)
 {
 	if (m_hBitmap && (!bSelected || bDisabled))
 	{
@@ -251,6 +251,10 @@ void CMenuXP::DrawBackGround(CDC *pDC, CRect rect, BOOL bSelected, BOOL bDisable
 	else if (bSelected)
 	{
 		FillRect(pDC, rect, bDisabled? ((m_Style==STYLE_XP)?m_clrBackGround:m_clrSelectedBar) : m_clrSelectedBar);
+	}
+	else if (clrGB)
+	{
+		FillRect(pDC, rect, clrGB);
 	}
 	else
 	{

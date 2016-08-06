@@ -48,6 +48,7 @@ public:
 	CString		m_strText;		//Menu item text
 	HICON		m_hIcon;		//Menu icon
 	int			m_nSize;		//Height of the item(Width of the sidebar if m_bSideBar is true)
+	COLORREF	m_clrGB;		//Menu item background color
 
 public:
 	CMenuXPItem() 
@@ -76,11 +77,12 @@ public:
 class CMenuXPText : public CMenuXPItem	//Normal item with text and an optional icon
 {
 public:
-	CMenuXPText(DWORD dwID, LPCTSTR strText, HICON hIcon = NULL) : CMenuXPItem()
+	CMenuXPText(DWORD dwID, LPCTSTR strText, HICON hIcon = NULL, COLORREF clrBG = NULL) : CMenuXPItem()
 	{
 		m_dwID = dwID;
 		m_strText = strText;
 		m_hIcon = hIcon;
+		m_clrGB = clrBG;
 	}
 };
 
@@ -189,7 +191,7 @@ public:
 	static	LRESULT OnMenuChar(UINT nChar, UINT nFlags, CMenu* pMenu);
 
 protected:
-	virtual void DrawBackGround(CDC *pDC, CRect rect, BOOL bSelected, BOOL bDisabled);
+	virtual void DrawBackGround(CDC *pDC, CRect rect, BOOL bSelected, BOOL bDisabled, COLORREF clrGB = NULL);
 	virtual void DrawButton(CDC *pDC, CRect rect, BOOL bSelected, BOOL bDisabled, BOOL bChecked);
 	virtual void DrawIcon(CDC *pDC, CRect rect, HICON hIcon, BOOL bSelected, BOOL bDisabled, BOOL bChecked);
 	virtual void DrawSideBar(CDC *pDC, CRect rect, HICON hIcon, CString strText);
