@@ -5,6 +5,8 @@ VisualStudioVersion = 12.0.40629.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "dynamic_menu_sdi", "dynamic_menu_sdi\dynamic_menu_sdi.vcxproj", "{5660C893-27B6-43B2-86D4-203C2132A325}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "dynamic_menu_separate_class_sdi", "dynamic_menu_separate_class_sdi\dynamic_menu_separate_class_sdi.vcxproj", "{E3820CF3-864A-43B3-816A-405499333EA0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -15,6 +17,10 @@ Global
 		{5660C893-27B6-43B2-86D4-203C2132A325}.Debug|Win32.Build.0 = Debug|Win32
 		{5660C893-27B6-43B2-86D4-203C2132A325}.Release|Win32.ActiveCfg = Release|Win32
 		{5660C893-27B6-43B2-86D4-203C2132A325}.Release|Win32.Build.0 = Release|Win32
+		{E3820CF3-864A-43B3-816A-405499333EA0}.Debug|Win32.ActiveCfg = Debug|Win32
+		{E3820CF3-864A-43B3-816A-405499333EA0}.Debug|Win32.Build.0 = Debug|Win32
+		{E3820CF3-864A-43B3-816A-405499333EA0}.Release|Win32.ActiveCfg = Release|Win32
+		{E3820CF3-864A-43B3-816A-405499333EA0}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

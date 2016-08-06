@@ -3,7 +3,7 @@
 //
 
 #include "stdafx.h"
-#include "dynamic_menu_sdi.h"
+#include "dynamic_menu_separate_class_sdi.h"
 
 #include "MainFrm.h"
 
@@ -26,11 +26,6 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWndEx)
 	ON_COMMAND_RANGE(ID_VIEW_APPLOOK_WIN_2000, ID_VIEW_APPLOOK_WINDOWS_7, &CMainFrame::OnApplicationLook)
 	ON_UPDATE_COMMAND_UI_RANGE(ID_VIEW_APPLOOK_WIN_2000, ID_VIEW_APPLOOK_WINDOWS_7, &CMainFrame::OnUpdateApplicationLook)
 	ON_WM_SETTINGCHANGE()
-ON_WM_DRAWITEM()
-ON_WM_CONTEXTMENU()
-ON_COMMAND(ID_NEW_APPLE, &CMainFrame::OnNewApple)
-ON_UPDATE_COMMAND_UI(ID_NEW_APPLE, &CMainFrame::OnUpdateNewApple)
-ON_WM_MEASUREITEM()
 END_MESSAGE_MAP()
 
 static UINT indicators[] =
@@ -47,13 +42,6 @@ CMainFrame::CMainFrame()
 {
 	// TODO: add member initialization code here
 	theApp.m_nAppLook = theApp.GetInt(_T("ApplicationLook"), ID_VIEW_APPLOOK_VS_2008);
-
-	std::map<CString, menu_element>::iterator it = m_map_menu_element_2.begin();
-	m_map_menu_element_2.insert(it, std::pair<CString, menu_element>("1", { "Apple", (COLORREF) RGB(255, 0, 0), (COLORREF) ::GetSysColor(COLOR_BTNTEXT), 0 }));
-	m_map_menu_element_2.insert(it, std::pair<CString, menu_element>("2", { "Orange", (COLORREF) ::GetSysColor(COLOR_MENU), (COLORREF) ::GetSysColor(COLOR_BTNTEXT), 0 }));
-	m_map_menu_element_2.insert(it, std::pair<CString, menu_element>("3", { "Banana", (COLORREF) ::GetSysColor(COLOR_MENU), (COLORREF) ::GetSysColor(COLOR_BTNTEXT), 0 }));
-	m_map_menu_element_2.insert(it, std::pair<CString, menu_element>("3_1", { "Alex", (COLORREF) ::GetSysColor(COLOR_MENU), (COLORREF) ::GetSysColor(COLOR_BTNTEXT), 0 }));
-	m_map_menu_element_2.insert(it, std::pair<CString, menu_element>("3_2", { "Sulfred", (COLORREF) ::GetSysColor(COLOR_MENU), (COLORREF) ::GetSysColor(COLOR_BTNTEXT), 0 }));
 }
 
 CMainFrame::~CMainFrame()
@@ -416,183 +404,4 @@ void CMainFrame::OnSettingChange(UINT uFlags, LPCTSTR lpszSection)
 {
 	CFrameWndEx::OnSettingChange(uFlags, lpszSection);
 	m_wndOutput.UpdateFonts();
-}
-
-
-
-
-
-
-
-void CMainFrame::build_dynamic_menu(const std::map<CString, menu_element>& map_name_menu, CMenu* const pProxyMenu, CMenu& dynamicMenu, CString preSearchKey)
-{
-	CString postSearchKey, searchKey;
-	for (int i = 0; i < pProxyMenu->GetMenuItemCount(); i++)
-	{
-		int nID = pProxyMenu->GetMenuItemID(i);
-		postSearchKey.Format("%d", i + 1);
-		searchKey = preSearchKey + postSearchKey;
-
-		std::map<CString, menu_element>::const_iterator it = map_name_menu.find(searchKey);
-		VERIFY(it != map_name_menu.end());
-		menu_element menu_element_temp = it->second;
-		CString strLabel, str_item_ID;
-		str_item_ID.Format("%d", nID);
-		pProxyMenu->GetMenuString(nID, strLabel, NULL);
-
-		std::map<CString, menu_element>::iterator it_on_draw = m_map_menu_on_draw.find(str_item_ID);
-
-		if (nID == 0) // if this is a separator
-		{
-			dynamicMenu.AppendMenu(MF_BYPOSITION | MF_SEPARATOR, (UINT)nID);
-		}
-		else if (nID > 0) // if this is a menu string
-		{
-			strLabel = menu_element_temp.content;
-			dynamicMenu.InsertMenu(i, MF_BYPOSITION | MF_OWNERDRAW, (UINT)nID, strLabel);
-			m_map_menu_on_draw.insert(it_on_draw, std::pair<CString, menu_element>(str_item_ID, menu_element_temp));
-		}
-		else // if this is a pop up
-		{
-			CMenu* pProxySubMenu = pProxyMenu->GetSubMenu(i);
-			VERIFY(pProxySubMenu != 0);
-			CMenu dynamicSubMenu;
-			dynamicSubMenu.CreatePopupMenu();
-
-			build_dynamic_menu(map_name_menu, pProxySubMenu, dynamicSubMenu, searchKey + CString("_"));
-
-			UINT uSubMenuID = (UINT)dynamicSubMenu.Detach();
-			strLabel = menu_element_temp.content;
-			dynamicMenu.InsertMenu(i, MF_BYPOSITION | MF_POPUP | MF_OWNERDRAW, uSubMenuID, strLabel);
-			str_item_ID.Format("%d", uSubMenuID);
-			m_map_menu_on_draw.insert(it_on_draw, std::pair<CString, menu_element>(str_item_ID, menu_element_temp));
-			dynamicSubMenu.DestroyMenu();
-		}
-	}
-}
-
-void CMainFrame::OnContextMenu(CWnd* pWnd, CPoint point)
-{
-	// TODO: Add your message handler code here
-	if (IDR_MY_MENU == 0)
-		return;
-	CMenu dynamicMenu, proxyMenu;
-	if (dynamicMenu.GetSafeHmenu())
-		dynamicMenu.DestroyMenu();
-	// Create a new popup menu.
-	if (dynamicMenu.CreatePopupMenu() == FALSE)
-		return;
-
-	if (proxyMenu.LoadMenu(IDR_MY_MENU) == FALSE)
-		return;
-
-	int nSubMenu = 1;
-	CMenu* pProxyMenu = proxyMenu.GetSubMenu(nSubMenu);
-
-	build_dynamic_menu(m_map_menu_element_2, pProxyMenu, dynamicMenu, CString(""));
-
-	CPoint ptCurPos; // current cursor position
-	GetCursorPos(&ptCurPos);
-	dynamicMenu.TrackPopupMenu(TPM_LEFTALIGN | TPM_LEFTBUTTON, ptCurPos.x, ptCurPos.y, AfxGetMainWnd(), NULL);
-}
-
-
-void CMainFrame::OnNewApple()
-{
-	// TODO: Add your command handler code here
-}
-
-
-void CMainFrame::OnUpdateNewApple(CCmdUI *pCmdUI)
-{
-	// TODO: Add your command update UI handler code here
-}
-
-void CMainFrame::OnDrawItem(int nIDCtl, LPDRAWITEMSTRUCT lpDrawItemStruct)
-{
-	// TODO: Add your message handler code here and/or call default
-	if (lpDrawItemStruct->CtlType == ODT_MENU)
-	{
-		CDC*    pDC = CDC::FromHandle(lpDrawItemStruct->hDC);
-		CRect   rect = lpDrawItemStruct->rcItem;
-		int     nID = lpDrawItemStruct->itemID;
-		bool    bSelected = (lpDrawItemStruct->itemState & ODS_SELECTED) ? true : false;
-		bool    bDisabled = (lpDrawItemStruct->itemState & ODS_DISABLED) ? true : false;
-
-		CString strKey;
-
-		strKey.Format(TEXT("%d"), nID);
-		std::map<CString, menu_element>::iterator it_on_draw_map = m_map_menu_on_draw.find(strKey);
-		if (it_on_draw_map == m_map_menu_on_draw.end()) // if no need to draw
-			return;
-
-		menu_element menu_element_onDraw = it_on_draw_map->second;
-		CString strItem = menu_element_onDraw.content;
-		COLORREF clrText = menu_element_onDraw.text_color;
-		COLORREF clrBG = 0;
-
-		if (!bSelected && bDisabled) //draw etched effect for disabled text
-		{
-			pDC->SetTextColor((COLORREF)::GetSysColor(COLOR_3DHILIGHT));
-			::TextOut(pDC->GetSafeHdc(), rect.left + 3, rect.top, strItem, strItem.GetLength());
-		}
-
-		if (bSelected && bDisabled)
-		{
-			pDC->SetTextColor((COLORREF)::GetSysColor(COLOR_3DSHADOW));
-			clrBG = (COLORREF) ::GetSysColor(COLOR_HIGHLIGHT);
-		}
-		else if (bSelected && !bDisabled)
-		{
-			pDC->SetTextColor((COLORREF)::GetSysColor(COLOR_HIGHLIGHTTEXT));
-			clrBG = (COLORREF) ::GetSysColor(COLOR_HIGHLIGHT);
-		}
-		else if (!bSelected && bDisabled)
-		{
-			pDC->SetTextColor((COLORREF)::GetSysColor(COLOR_3DSHADOW));
-			clrBG = menu_element_onDraw.background_color;
-		}
-		else // case for !bSelected && !bDisabled
-		{
-			pDC->SetTextColor(clrText);
-			clrBG = menu_element_onDraw.background_color;
-		}
-		pDC->FillSolidRect(&rect, clrBG);
-		::TextOut(pDC->GetSafeHdc(), rect.left + 2, rect.top, strItem, strItem.GetLength());
-	}
-
-	CFrameWndEx::OnDrawItem(nIDCtl, lpDrawItemStruct);
-}
-
-void CMainFrame::OnMeasureItem(int nIDCtl, LPMEASUREITEMSTRUCT lpMeasureItemStruct)
-{
-	// TODO: Add your message handler code here and/or call default
-	if ((lpMeasureItemStruct->CtlType == ODT_MENU))
-	{
-		CClientDC dc(this);
-		CMenu menu;
-		CMenu* pMenu = NULL;
-		CString strKey;
-		CString strItem;
-		int nID;
-
-		// Get menu ID and create a lookup key.
-		nID = lpMeasureItemStruct->itemID;
-		strKey.Format(_T("%d"), nID);
-		std::map<CString, menu_element>::iterator it_on_draw_map = m_map_menu_on_draw.find(strKey);
-		if (it_on_draw_map == m_map_menu_on_draw.end()) // if no need to draw
-			return;
-
-		// Get menu string.
-		strItem = it_on_draw_map->second.content;
-
-		CSize sizeItem;
-		sizeItem = dc.GetOutputTextExtent(strItem);
-		
-		lpMeasureItemStruct->itemWidth = sizeItem.cx + 60;
-		lpMeasureItemStruct->itemHeight = sizeItem.cy + 1;
-
-		return;
-	}
-	CFrameWndEx::OnMeasureItem(nIDCtl, lpMeasureItemStruct);
 }
