@@ -54,6 +54,12 @@
     <ClInclude Include="PropertiesWnd.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="MenuXP.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="KeyHelper.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dynamic_menu_separate_class_sdi.cpp">
@@ -84,6 +90,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="PropertiesWnd.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MenuXP.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="KeyHelper.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -166,6 +178,45 @@
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="res\Toolbar256.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\3.5 inch Floppy.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\5.25 inch Floppy.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\addon.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\Application.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\Applications.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\au sound.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\Backup Archive.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\Cd-rom Drive.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\Control Panel.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\Corel File.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\Danagerous.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\Data File DAT.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\menubitmap.bmp">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

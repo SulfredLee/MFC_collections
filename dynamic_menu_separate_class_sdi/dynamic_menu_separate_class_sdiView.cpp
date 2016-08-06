@@ -11,6 +11,8 @@
 
 #include "dynamic_menu_separate_class_sdiDoc.h"
 #include "dynamic_menu_separate_class_sdiView.h"
+#include "MainFrm.h"
+#include "MenuXP.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -28,6 +30,7 @@ BEGIN_MESSAGE_MAP(Cdynamic_menu_separate_class_sdiView, CView)
 	ON_COMMAND(ID_FILE_PRINT_PREVIEW, &Cdynamic_menu_separate_class_sdiView::OnFilePrintPreview)
 	ON_WM_CONTEXTMENU()
 	ON_WM_RBUTTONUP()
+	ON_WM_MEASUREITEM()
 END_MESSAGE_MAP()
 
 // Cdynamic_menu_separate_class_sdiView construction/destruction
@@ -95,11 +98,14 @@ void Cdynamic_menu_separate_class_sdiView::OnRButtonUp(UINT /* nFlags */, CPoint
 	OnContextMenu(this, point);
 }
 
-void Cdynamic_menu_separate_class_sdiView::OnContextMenu(CWnd* /* pWnd */, CPoint point)
+void Cdynamic_menu_separate_class_sdiView::OnContextMenu(CWnd* pWnd, CPoint point)
 {
-#ifndef SHARED_HANDLERS
-	theApp.GetContextMenuManager()->ShowPopupMenu(IDR_POPUP_EDIT, point.x, point.y, this, TRUE);
-#endif
+//#ifndef SHARED_HANDLERS
+//	theApp.GetContextMenuManager()->ShowPopupMenu(IDR_POPUP_EDIT, point.x, point.y, this, TRUE);
+//#endif
+
+	CMainFrame* pMain = (CMainFrame*)GetParentFrame();
+	pMain->OnContextMenu(pWnd, point);		
 }
 
 
@@ -125,3 +131,13 @@ Cdynamic_menu_separate_class_sdiDoc* Cdynamic_menu_separate_class_sdiView::GetDo
 
 
 // Cdynamic_menu_separate_class_sdiView message handlers
+
+
+void Cdynamic_menu_separate_class_sdiView::OnMeasureItem(int nIDCtl, LPMEASUREITEMSTRUCT lpMeasureItemStruct)
+{
+	// TODO: Add your message handler code here and/or call default
+	
+
+	CView::OnMeasureItem(nIDCtl, lpMeasureItemStruct);
+}
+

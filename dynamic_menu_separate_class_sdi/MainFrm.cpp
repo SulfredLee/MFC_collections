@@ -6,6 +6,7 @@
 #include "dynamic_menu_separate_class_sdi.h"
 
 #include "MainFrm.h"
+#include "MenuXP.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -26,6 +27,9 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWndEx)
 	ON_COMMAND_RANGE(ID_VIEW_APPLOOK_WIN_2000, ID_VIEW_APPLOOK_WINDOWS_7, &CMainFrame::OnApplicationLook)
 	ON_UPDATE_COMMAND_UI_RANGE(ID_VIEW_APPLOOK_WIN_2000, ID_VIEW_APPLOOK_WINDOWS_7, &CMainFrame::OnUpdateApplicationLook)
 	ON_WM_SETTINGCHANGE()
+	ON_WM_CONTEXTMENU()
+	ON_WM_MEASUREITEM()
+	ON_COMMAND(10, &CMainFrame::OnFirstItem)
 END_MESSAGE_MAP()
 
 static UINT indicators[] =
@@ -404,4 +408,74 @@ void CMainFrame::OnSettingChange(UINT uFlags, LPCTSTR lpszSection)
 {
 	CFrameWndEx::OnSettingChange(uFlags, lpszSection);
 	m_wndOutput.UpdateFonts();
+}
+
+
+void CMainFrame::OnContextMenu(CWnd* pWnd, CPoint point)
+{
+	// TODO: Add your message handler code here
+	CMenuXP	*pMenu = new CMenuXP;
+	pMenu->CreatePopupMenu();
+
+	pMenu->SetSelectedBarColor(RGB(0x66, 0x99, 0xff));
+	//	pMenu->SetMenuStyle(CMenuXP::STYLE_XP);
+	CBitmap	bmp;
+	bmp.LoadBitmap(IDB_BACK);
+	//pMenu->SetBackBitmap((HBITMAP)bmp.Detach());
+
+	//pMenu->AddSideBar(new CMenuXPSideBar(24, "MenuXP"));
+	pMenu->AppendODMenu(0, new CMenuXPText(10, "First Item", AfxGetApp()->LoadIcon(IDI_ICON1)));
+	pMenu->AppendSeparator();
+	pMenu->AppendODMenu(MF_CHECKED, new CMenuXPText(11, "Checked Item", AfxGetApp()->LoadIcon(IDI_ICON2)));
+	pMenu->AppendODMenu(0, new CMenuXPText(12, "Another Item", AfxGetApp()->LoadIcon(IDI_ICON3)));
+	pMenu->AppendODMenu(0, new CMenuXPText(13, "No Icon"));
+	pMenu->SetDefaultItem(12);
+
+	CMenuXP *pPopup = new CMenuXP;
+	pPopup->CreatePopupMenu();
+
+	pPopup->SetSelectedBarColor(RGB(0x66, 0x99, 0xff));
+	//	pPopup->SetMenuStyle(CMenuXP::STYLE_XP);
+
+	pPopup->AddSideBar(new CMenuXPSideBar(24, "Buttons"));
+	pPopup->SetSideBarStartColor(RGB(125, 230, 192));
+	pPopup->SetSideBarEndColor(RGB(0, 0, 0));
+	pPopup->AppendODMenu(0, new CMenuXPButton(21, AfxGetApp()->LoadIcon(IDI_ICON4)));
+	pPopup->AppendODMenu(0, new CMenuXPButton(22, AfxGetApp()->LoadIcon(IDI_ICON5)));
+	pPopup->AppendODMenu(0, new CMenuXPButton(23, AfxGetApp()->LoadIcon(IDI_ICON6)));
+	pPopup->Break();
+	pPopup->AppendODMenu(MF_CHECKED, new CMenuXPButton(24, AfxGetApp()->LoadIcon(IDI_ICON7)));
+	pPopup->AppendODMenu(0, new CMenuXPButton(25, AfxGetApp()->LoadIcon(IDI_ICON8)));
+	pPopup->AppendODMenu(0, new CMenuXPButton(26, AfxGetApp()->LoadIcon(IDI_ICON9)));
+	pPopup->Break();
+	pPopup->AppendODMenu(0, new CMenuXPButton(27, AfxGetApp()->LoadIcon(IDI_ICON10)));
+	pPopup->AppendODMenu(0, new CMenuXPButton(28, AfxGetApp()->LoadIcon(IDI_ICON11)));
+	pPopup->AppendODMenu(0, new CMenuXPButton(29, AfxGetApp()->LoadIcon(IDI_ICON12)));
+
+	pMenu->AppendODPopup(0, pPopup, new CMenuXPText(0, "Popup", AfxGetApp()->LoadIcon(IDI_ICON1)));
+
+	pMenu->AppendODMenu(MF_GRAYED, new CMenuXPText(40, "Disabled", AfxGetApp()->LoadIcon(IDI_ICON5)));
+	pMenu->AppendODMenu(MF_CHECKED, new CMenuXPText(41, "Checked"));
+
+	pMenu->TrackPopupMenu(TPM_LEFTBUTTON, point.x, point.y, this);
+
+	delete pMenu;
+}
+
+
+void CMainFrame::OnMeasureItem(int nIDCtl, LPMEASUREITEMSTRUCT lpMeasureItemStruct)
+{
+	// TODO: Add your message handler code here and/or call default
+	HMENU hMenu = AfxGetThreadState()->m_hTrackingMenu;
+	CMenu	*pMenu = CMenu::FromHandle(hMenu);
+	pMenu->MeasureItem(lpMeasureItemStruct);
+
+	CFrameWndEx::OnMeasureItem(nIDCtl, lpMeasureItemStruct);
+}
+
+void CMainFrame::OnFirstItem()
+{
+	int i = 0;
+	i++;
+	i++;
 }
