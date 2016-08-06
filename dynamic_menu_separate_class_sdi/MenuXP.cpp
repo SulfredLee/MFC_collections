@@ -339,7 +339,7 @@ void CMenuXP::DrawIcon(CDC *pDC, CRect rect, HICON hIcon, BOOL bSelected, BOOL b
 }
 
 //draw the sidebar
-void CMenuXP::DrawSideBar(CDC *pDC, CRect rect, HICON hIcon, CString strText)
+void CMenuXP::DrawSideBar(CDC *pDC, CRect rect, HICON hIcon, CStringW strText)
 {
 	rect.right += 3;	//fill the gap produced by the menubreak
 
@@ -363,12 +363,12 @@ void CMenuXP::DrawSideBar(CDC *pDC, CRect rect, HICON hIcon, CString strText)
 	vertFont.CreateFont(16, 0, 900, 900, FW_BOLD,
 		0, 0, 0, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS,
 		CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY,
-		DEFAULT_PITCH, "Arial");
+		DEFAULT_PITCH, _T("Arial"));
 	CFont *pOldFont = pDC->SelectObject(&vertFont);
 	COLORREF oldColor = pDC->GetTextColor();
 	pDC->SetTextColor(RGB(255, 255, 255));
 	pDC->SetBkMode(TRANSPARENT);
-	pDC->TextOut(rect.left+2, rect.bottom-4, strText);
+	pDC->TextOut(rect.left + 2, rect.bottom - 4, strText);
 	pDC->SetTextColor(oldColor);	
 	pDC->SelectObject(pOldFont);
 	vertFont.DeleteObject();
@@ -452,7 +452,7 @@ void CMenuXP::DrawCheckMark(CDC *pDC, CRect rect, BOOL bSelected)
 }
 
 //Draw menu text
-void CMenuXP::DrawText(CDC *pDC, CRect rect, CString strText, BOOL bSelected, BOOL bDisabled, BOOL bBold)
+void CMenuXP::DrawText(CDC *pDC, CRect rect, CStringW strText, BOOL bSelected, BOOL bDisabled, BOOL bBold)
 {
 	CFont*	pOldFont;
 	CFont	fontBold;
@@ -703,7 +703,7 @@ LRESULT CMenuXP::OnMenuChar(UINT nChar, UINT nFlags, CMenu* pMenu)
 		CMenuXPItem	*pData = (CMenuXPItem *)info.dwItemData;
 		if ((info.fType & MFT_OWNERDRAW) && pData && pData->IsMyData())
 		{
-			CString	text = pData->m_strText;
+			CStringW	text = pData->m_strText;
 			int iAmpersand = text.Find('&');
 			if (iAmpersand >=0 && toupper(nChar)==toupper(text[iAmpersand+1]))
 				arItemsMatched.Add(i);
@@ -737,11 +737,11 @@ LRESULT CMenuXP::OnMenuChar(UINT nChar, UINT nFlags, CMenu* pMenu)
 	return MAKELONG(arItemsMatched[iSelect], MNC_SELECT);
 }
 
-void CMenuXP::DrawMenuText(CDC& dc, CRect rc, CString text,
+void CMenuXP::DrawMenuText(CDC& dc, CRect rc, CStringW text,
 	COLORREF color)
 {
-	CString left = text;
-	CString right;
+	CStringW left = text;
+	CStringW right;
 	int iTabPos = left.Find('\t');
 	if (iTabPos >= 0) {
 		right = left.Right(left.GetLength() - iTabPos - 1);
@@ -805,7 +805,7 @@ BOOL CMenuXP::AppendODMenu(UINT nFlags, CMenuXPItem *pItem, ACCEL *pAccel)
 	if (pAccel)
 	{
 		CBCGKeyHelper	keyhelper(pAccel);
-		CString	strAccel;
+		CStringW	strAccel;
 		keyhelper.Format(strAccel);
 		if (strAccel.GetLength()>0)
 		{

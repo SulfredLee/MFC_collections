@@ -45,7 +45,7 @@ public:
 	bool		m_bSeparator;	//Separator
 	bool		m_bSideBar;		//A gradient sidebar
 	bool		m_bButtonOnly;	//Button only style item
-	CString		m_strText;		//Menu item text
+	CStringW		m_strText;		//Menu item text
 	HICON		m_hIcon;		//Menu icon
 	int			m_nSize;		//Height of the item(Width of the sidebar if m_bSideBar is true)
 	COLORREF	m_clrGB;		//Menu item background color
@@ -194,10 +194,10 @@ protected:
 	virtual void DrawBackGround(CDC *pDC, CRect rect, BOOL bSelected, BOOL bDisabled, COLORREF clrGB = NULL);
 	virtual void DrawButton(CDC *pDC, CRect rect, BOOL bSelected, BOOL bDisabled, BOOL bChecked);
 	virtual void DrawIcon(CDC *pDC, CRect rect, HICON hIcon, BOOL bSelected, BOOL bDisabled, BOOL bChecked);
-	virtual void DrawSideBar(CDC *pDC, CRect rect, HICON hIcon, CString strText);
-	virtual void DrawText(CDC *pDC, CRect rect, CString strText, BOOL bSelected, BOOL bDisabled, BOOL bBold);
+	virtual void DrawSideBar(CDC *pDC, CRect rect, HICON hIcon, CStringW strText);
+	virtual void DrawText(CDC *pDC, CRect rect, CStringW strText, BOOL bSelected, BOOL bDisabled, BOOL bBold);
 	virtual void DrawCheckMark(CDC *pDC, CRect rect, BOOL bSelected);
-	virtual void DrawMenuText(CDC& dc, CRect rc, CString text, COLORREF color);
+	virtual void DrawMenuText(CDC& dc, CRect rc, CStringW text, COLORREF color);
 	virtual void DrawIconArea(CDC *pDC, CRect rect, BOOL bSelected, BOOL bDisabled, BOOL bChecked);
 
 	void	Clear(void);	//Clean all memory and handles

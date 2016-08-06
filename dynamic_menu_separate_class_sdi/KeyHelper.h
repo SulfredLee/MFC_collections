@@ -31,10 +31,10 @@ public:
 
 // Operations:
 public:
-	void Format (CString& str) const;
+	void Format (CStringW& str) const;
 
 protected:
-	void AddVirtKeyStr (CString& str, UINT uiVirtKey, BOOL bLast = FALSE) const;
+	void AddVirtKeyStr (CStringW& str, UINT uiVirtKey, BOOL bLast = FALSE) const;
 
 // Atttributes:
 public:

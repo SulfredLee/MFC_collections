@@ -41,7 +41,7 @@ CBCGKeyHelper::~CBCGKeyHelper()
 {
 }
 //*******************************************************************
-void CBCGKeyHelper::Format (CString& str) const
+void CBCGKeyHelper::Format (CStringW& str) const
 {
 	str.Empty ();
 
@@ -82,7 +82,7 @@ void CBCGKeyHelper::Format (CString& str) const
 	}
 }
 //******************************************************************
-void CBCGKeyHelper::AddVirtKeyStr (CString& str, UINT uiVirtKey, BOOL bLast) const
+void CBCGKeyHelper::AddVirtKeyStr (CStringW& str, UINT uiVirtKey, BOOL bLast) const
 {
 	//
 	// This file was modified by Sven Ritter
@@ -103,7 +103,7 @@ void CBCGKeyHelper::AddVirtKeyStr (CString& str, UINT uiVirtKey, BOOL bLast) con
 	
 	::GetKeyNameText (nScanCode, szBuffer, BUFFER_LEN);
 	
-	CString strKey(szBuffer);
+	CStringW strKey(szBuffer);
 	strKey.MakeLower();
 	
 	//--------------------------------------

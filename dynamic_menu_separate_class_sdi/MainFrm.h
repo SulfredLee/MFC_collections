@@ -17,10 +17,11 @@ protected: // create from serialization only
 
 // Attributes
 public:
-
+	BOOL	m_bcht;
 // Operations
 public:
-
+	void make_eng_menu(CWnd* pWnd, CPoint point);
+	void make_cht_menu(CWnd* pWnd, CPoint point);
 // Overrides
 public:
 	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);

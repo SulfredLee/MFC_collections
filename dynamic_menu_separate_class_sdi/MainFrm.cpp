@@ -414,52 +414,11 @@ void CMainFrame::OnSettingChange(UINT uFlags, LPCTSTR lpszSection)
 void CMainFrame::OnContextMenu(CWnd* pWnd, CPoint point)
 {
 	// TODO: Add your message handler code here
-	CMenuXP	*pMenu = new CMenuXP;
-	pMenu->CreatePopupMenu();
-
-	pMenu->SetSelectedBarColor(RGB(0x66, 0x99, 0xff));
-	//	pMenu->SetMenuStyle(CMenuXP::STYLE_XP);
-	CBitmap	bmp;
-	bmp.LoadBitmap(IDB_BACK);
-	//pMenu->SetBackBitmap((HBITMAP)bmp.Detach());
-
-	//pMenu->AddSideBar(new CMenuXPSideBar(24, "MenuXP"));
-	pMenu->AppendODMenu(0, new CMenuXPText(10, "First Item", AfxGetApp()->LoadIcon(IDI_ICON1)));
-	pMenu->AppendSeparator();
-	pMenu->AppendODMenu(MF_CHECKED, new CMenuXPText(11, "Checked Item", AfxGetApp()->LoadIcon(IDI_ICON2)));
-	pMenu->AppendODMenu(0, new CMenuXPText(12, "Another Item", AfxGetApp()->LoadIcon(IDI_ICON3)));
-	pMenu->AppendODMenu(0, new CMenuXPText(13, "No Icon", NULL, RGB(255,0,0)));
-	pMenu->SetDefaultItem(12);
-
-	CMenuXP *pPopup = new CMenuXP;
-	pPopup->CreatePopupMenu();
-
-	pPopup->SetSelectedBarColor(RGB(0x66, 0x99, 0xff));
-	//	pPopup->SetMenuStyle(CMenuXP::STYLE_XP);
-
-	pPopup->AddSideBar(new CMenuXPSideBar(24, "Buttons"));
-	pPopup->SetSideBarStartColor(RGB(125, 230, 192));
-	pPopup->SetSideBarEndColor(RGB(0, 0, 0));
-	pPopup->AppendODMenu(0, new CMenuXPButton(21, AfxGetApp()->LoadIcon(IDI_ICON4)));
-	pPopup->AppendODMenu(0, new CMenuXPButton(22, AfxGetApp()->LoadIcon(IDI_ICON5)));
-	pPopup->AppendODMenu(0, new CMenuXPButton(23, AfxGetApp()->LoadIcon(IDI_ICON6)));
-	pPopup->Break();
-	pPopup->AppendODMenu(MF_CHECKED, new CMenuXPButton(24, AfxGetApp()->LoadIcon(IDI_ICON7)));
-	pPopup->AppendODMenu(0, new CMenuXPButton(25, AfxGetApp()->LoadIcon(IDI_ICON8)));
-	pPopup->AppendODMenu(0, new CMenuXPButton(26, AfxGetApp()->LoadIcon(IDI_ICON9)));
-	pPopup->Break();
-	pPopup->AppendODMenu(0, new CMenuXPButton(27, AfxGetApp()->LoadIcon(IDI_ICON10)));
-	pPopup->AppendODMenu(0, new CMenuXPButton(28, AfxGetApp()->LoadIcon(IDI_ICON11)));
-	pPopup->AppendODMenu(0, new CMenuXPButton(29, AfxGetApp()->LoadIcon(IDI_ICON12)));
-
-	pMenu->AppendODPopup(0, pPopup, new CMenuXPText(0, "Popup", AfxGetApp()->LoadIcon(IDI_ICON1)));
-
-	pMenu->AppendODMenu(MF_GRAYED, new CMenuXPText(40, "Disabled", AfxGetApp()->LoadIcon(IDI_ICON5)));
-	pMenu->AppendODMenu(MF_CHECKED, new CMenuXPText(41, "Checked"));
-
-	pMenu->TrackPopupMenu(TPM_LEFTBUTTON, point.x, point.y, this);
-
-	delete pMenu;
+	m_bcht = TRUE;
+	if (m_bcht)
+		make_cht_menu(pWnd, point);
+	else
+		make_eng_menu(pWnd, point);
 }
 
 
@@ -478,4 +437,103 @@ void CMainFrame::OnFirstItem()
 	int i = 0;
 	i++;
 	i++;
+}
+
+void CMainFrame::make_eng_menu(CWnd* pWnd, CPoint point)
+{
+	CMenuXP	*pMenu = new CMenuXP;
+	pMenu->CreatePopupMenu();
+
+	pMenu->SetSelectedBarColor(RGB(0x66, 0x99, 0xff));
+	//	pMenu->SetMenuStyle(CMenuXP::STYLE_XP);
+	CBitmap	bmp;
+	bmp.LoadBitmap(IDB_BACK);
+	//pMenu->SetBackBitmap((HBITMAP)bmp.Detach());
+
+	//pMenu->AddSideBar(new CMenuXPSideBar(24, "MenuXP"));
+	pMenu->AppendODMenu(0, new CMenuXPText(10, _T("First Item"), AfxGetApp()->LoadIcon(IDI_ICON1)));
+	pMenu->AppendSeparator();
+	pMenu->AppendODMenu(MF_CHECKED, new CMenuXPText(11, _T("Checked Item"), AfxGetApp()->LoadIcon(IDI_ICON2)));
+	pMenu->AppendODMenu(0, new CMenuXPText(12, _T("Another Item"), AfxGetApp()->LoadIcon(IDI_ICON3)));
+	pMenu->AppendODMenu(0, new CMenuXPText(13, _T("No Icon"), NULL, RGB(255, 0, 0)));
+	pMenu->SetDefaultItem(12);
+
+	CMenuXP *pPopup = new CMenuXP;
+	pPopup->CreatePopupMenu();
+
+	pPopup->SetSelectedBarColor(RGB(0x66, 0x99, 0xff));
+	//	pPopup->SetMenuStyle(CMenuXP::STYLE_XP);
+
+	pPopup->AddSideBar(new CMenuXPSideBar(24, _T("Buttons")));
+	pPopup->SetSideBarStartColor(RGB(125, 230, 192));
+	pPopup->SetSideBarEndColor(RGB(0, 0, 0));
+	pPopup->AppendODMenu(0, new CMenuXPButton(21, AfxGetApp()->LoadIcon(IDI_ICON4)));
+	pPopup->AppendODMenu(0, new CMenuXPButton(22, AfxGetApp()->LoadIcon(IDI_ICON5)));
+	pPopup->AppendODMenu(0, new CMenuXPButton(23, AfxGetApp()->LoadIcon(IDI_ICON6)));
+	pPopup->Break();
+	pPopup->AppendODMenu(MF_CHECKED, new CMenuXPButton(24, AfxGetApp()->LoadIcon(IDI_ICON7)));
+	pPopup->AppendODMenu(0, new CMenuXPButton(25, AfxGetApp()->LoadIcon(IDI_ICON8)));
+	pPopup->AppendODMenu(0, new CMenuXPButton(26, AfxGetApp()->LoadIcon(IDI_ICON9)));
+	pPopup->Break();
+	pPopup->AppendODMenu(0, new CMenuXPButton(27, AfxGetApp()->LoadIcon(IDI_ICON10)));
+	pPopup->AppendODMenu(0, new CMenuXPButton(28, AfxGetApp()->LoadIcon(IDI_ICON11)));
+	pPopup->AppendODMenu(0, new CMenuXPButton(29, AfxGetApp()->LoadIcon(IDI_ICON12)));
+
+	pMenu->AppendODPopup(0, pPopup, new CMenuXPText(0, _T("Popup"), AfxGetApp()->LoadIcon(IDI_ICON1)));
+
+	pMenu->AppendODMenu(MF_GRAYED, new CMenuXPText(40, _T("Disabled"), AfxGetApp()->LoadIcon(IDI_ICON5)));
+	pMenu->AppendODMenu(MF_CHECKED, new CMenuXPText(41, _T("Checked")));
+
+	pMenu->TrackPopupMenu(TPM_LEFTBUTTON, point.x, point.y, this);
+
+	delete pMenu;
+}
+void CMainFrame::make_cht_menu(CWnd* pWnd, CPoint point)
+{
+	CMenuXP	*pMenu = new CMenuXP;
+	pMenu->CreatePopupMenu();
+
+	pMenu->SetSelectedBarColor(RGB(0x66, 0x99, 0xff));
+	//	pMenu->SetMenuStyle(CMenuXP::STYLE_XP);
+	CBitmap	bmp;
+	bmp.LoadBitmap(IDB_BACK);
+	//pMenu->SetBackBitmap((HBITMAP)bmp.Detach());
+
+	pMenu->AddSideBar(new CMenuXPSideBar(24, _T("菜單XP")));
+	pMenu->AppendODMenu(0, new CMenuXPText(10, _T("項目一"), AfxGetApp()->LoadIcon(IDI_ICON1)));
+	pMenu->AppendSeparator();
+	pMenu->AppendODMenu(MF_CHECKED, new CMenuXPText(11, _T("已選項目"), AfxGetApp()->LoadIcon(IDI_ICON2)));
+	pMenu->AppendODMenu(0, new CMenuXPText(12, _T("其他項目"), AfxGetApp()->LoadIcon(IDI_ICON3)));
+	pMenu->AppendODMenu(0, new CMenuXPText(13, _T("沒有圖示"), NULL, RGB(255, 0, 0)));
+	pMenu->SetDefaultItem(12);
+
+	CMenuXP *pPopup = new CMenuXP;
+	pPopup->CreatePopupMenu();
+
+	pPopup->SetSelectedBarColor(RGB(0x66, 0x99, 0xff));
+	//	pPopup->SetMenuStyle(CMenuXP::STYLE_XP);
+
+	pPopup->AddSideBar(new CMenuXPSideBar(24, _T("按鍵")));
+	pPopup->SetSideBarStartColor(RGB(125, 230, 192));
+	pPopup->SetSideBarEndColor(RGB(0, 0, 0));
+	pPopup->AppendODMenu(0, new CMenuXPButton(21, AfxGetApp()->LoadIcon(IDI_ICON4)));
+	pPopup->AppendODMenu(0, new CMenuXPButton(22, AfxGetApp()->LoadIcon(IDI_ICON5)));
+	pPopup->AppendODMenu(0, new CMenuXPButton(23, AfxGetApp()->LoadIcon(IDI_ICON6)));
+	pPopup->Break();
+	pPopup->AppendODMenu(MF_CHECKED, new CMenuXPButton(24, AfxGetApp()->LoadIcon(IDI_ICON7)));
+	pPopup->AppendODMenu(0, new CMenuXPButton(25, AfxGetApp()->LoadIcon(IDI_ICON8)));
+	pPopup->AppendODMenu(0, new CMenuXPButton(26, AfxGetApp()->LoadIcon(IDI_ICON9)));
+	pPopup->Break();
+	pPopup->AppendODMenu(0, new CMenuXPButton(27, AfxGetApp()->LoadIcon(IDI_ICON10)));
+	pPopup->AppendODMenu(0, new CMenuXPButton(28, AfxGetApp()->LoadIcon(IDI_ICON11)));
+	pPopup->AppendODMenu(0, new CMenuXPButton(29, AfxGetApp()->LoadIcon(IDI_ICON12)));
+
+	pMenu->AppendODPopup(0, pPopup, new CMenuXPText(0, _T("彈出選單"), AfxGetApp()->LoadIcon(IDI_ICON1)));
+
+	pMenu->AppendODMenu(MF_GRAYED, new CMenuXPText(40, _T("禁用"), AfxGetApp()->LoadIcon(IDI_ICON5)));
+	pMenu->AppendODMenu(MF_CHECKED, new CMenuXPText(41, _T("已選")));
+
+	pMenu->TrackPopupMenu(TPM_LEFTBUTTON, point.x, point.y, this);
+
+	delete pMenu;
 }
