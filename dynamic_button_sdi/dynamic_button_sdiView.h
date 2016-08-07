@@ -3,7 +3,8 @@
 //
 
 #pragma once
-#define MYBUTTONID 10000
+#define MYBUTTONID			10000
+#define MYBUTTONID_ICON		10001
 
 class Cdynamic_button_sdiView : public CView
 {
@@ -15,6 +16,7 @@ protected: // create from serialization only
 public:
 	Cdynamic_button_sdiDoc* GetDocument() const;
 	CButton m_Button;
+	CButton m_Button_icon;
 // Operations
 public:
 	void RepositionButton();
