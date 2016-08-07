@@ -7,7 +7,11 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "dynamic_menu_sdi", "dynamic
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "dynamic_menu_separate_class_sdi", "dynamic_menu_separate_class_sdi\dynamic_menu_separate_class_sdi.vcxproj", "{E3820CF3-864A-43B3-816A-405499333EA0}"
 EndProject
+<<<<<<< HEAD
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "print_chinese_multibyte", "print_chinese_multibyte\print_chinese_multibyte.vcxproj", "{083BCB4E-539E-43EB-BCC6-9400F5EE8A18}"
+=======
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "dynamic_button_sdi", "dynamic_button_sdi\dynamic_button_sdi.vcxproj", "{DB570C7A-76A4-40E5-B614-295A36362B78}"
+>>>>>>> dynamic_button_sdi
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,10 +27,17 @@ Global
 		{E3820CF3-864A-43B3-816A-405499333EA0}.Debug|Win32.Build.0 = Debug|Win32
 		{E3820CF3-864A-43B3-816A-405499333EA0}.Release|Win32.ActiveCfg = Release|Win32
 		{E3820CF3-864A-43B3-816A-405499333EA0}.Release|Win32.Build.0 = Release|Win32
+<<<<<<< HEAD
 		{083BCB4E-539E-43EB-BCC6-9400F5EE8A18}.Debug|Win32.ActiveCfg = Debug|Win32
 		{083BCB4E-539E-43EB-BCC6-9400F5EE8A18}.Debug|Win32.Build.0 = Debug|Win32
 		{083BCB4E-539E-43EB-BCC6-9400F5EE8A18}.Release|Win32.ActiveCfg = Release|Win32
 		{083BCB4E-539E-43EB-BCC6-9400F5EE8A18}.Release|Win32.Build.0 = Release|Win32
+=======
+		{DB570C7A-76A4-40E5-B614-295A36362B78}.Debug|Win32.ActiveCfg = Debug|Win32
+		{DB570C7A-76A4-40E5-B614-295A36362B78}.Debug|Win32.Build.0 = Debug|Win32
+		{DB570C7A-76A4-40E5-B614-295A36362B78}.Release|Win32.ActiveCfg = Release|Win32
+		{DB570C7A-76A4-40E5-B614-295A36362B78}.Release|Win32.Build.0 = Release|Win32
+>>>>>>> dynamic_button_sdi
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
