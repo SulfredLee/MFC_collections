@@ -28,6 +28,7 @@ BEGIN_MESSAGE_MAP(Cdynamic_button_sdiView, CView)
 	ON_COMMAND(ID_FILE_PRINT_PREVIEW, &Cdynamic_button_sdiView::OnFilePrintPreview)
 	ON_WM_CONTEXTMENU()
 	ON_WM_RBUTTONUP()
+	ON_BN_CLICKED(MYBUTTONID, OnMyBN_Click)
 END_MESSAGE_MAP()
 
 // Cdynamic_button_sdiView construction/destruction
@@ -35,7 +36,6 @@ END_MESSAGE_MAP()
 Cdynamic_button_sdiView::Cdynamic_button_sdiView()
 {
 	// TODO: add construction code here
-
 }
 
 Cdynamic_button_sdiView::~Cdynamic_button_sdiView()
@@ -52,20 +52,41 @@ BOOL Cdynamic_button_sdiView::PreCreateWindow(CREATESTRUCT& cs)
 
 // Cdynamic_button_sdiView drawing
 
-void Cdynamic_button_sdiView::OnDraw(CDC* /*pDC*/)
+void Cdynamic_button_sdiView::OnDraw(CDC* pDC)
 {
 	Cdynamic_button_sdiDoc* pDoc = GetDocument();
 	ASSERT_VALID(pDoc);
 	if (!pDoc)
 		return;
 
-	// TODO: add draw code for native data here
+	// TODO: add draw code for native data here	
+	
 }
 
 
 // Cdynamic_button_sdiView printing
 
+void Cdynamic_button_sdiView::OnInitialUpdate()
+{
+	CView::OnInitialUpdate();
 
+	m_Button.Create(_T("Rearrange"), WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON, CRect(0, 0, 128, 32), this, MYBUTTONID); // here will create a button
+	RepositionButton(); // here will redraw a button and replace the button, this can be used for scrolling view application
+}
+void Cdynamic_button_sdiView::RepositionButton()
+{
+	//work out button position you need
+	int x, y, width, height;
+	x = 10;
+	y = 10;
+	width = 128;
+	height = 32;
+	m_Button.MoveWindow(x, y, width, height);
+}
+void Cdynamic_button_sdiView::OnMyBN_Click()
+{
+	m_Button.EnableWindow(FALSE);
+}
 void Cdynamic_button_sdiView::OnFilePrintPreview()
 {
 #ifndef SHARED_HANDLERS

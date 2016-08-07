@@ -3,7 +3,7 @@
 //
 
 #pragma once
-
+#define MYBUTTONID 10000
 
 class Cdynamic_button_sdiView : public CView
 {
@@ -14,10 +14,10 @@ protected: // create from serialization only
 // Attributes
 public:
 	Cdynamic_button_sdiDoc* GetDocument() const;
-
+	CButton m_Button;
 // Operations
 public:
-
+	void RepositionButton();
 // Overrides
 public:
 	virtual void OnDraw(CDC* pDC);  // overridden to draw this view
@@ -26,6 +26,7 @@ protected:
 	virtual BOOL OnPreparePrinting(CPrintInfo* pInfo);
 	virtual void OnBeginPrinting(CDC* pDC, CPrintInfo* pInfo);
 	virtual void OnEndPrinting(CDC* pDC, CPrintInfo* pInfo);
+	virtual void OnInitialUpdate();
 
 // Implementation
 public:
@@ -42,6 +43,7 @@ protected:
 	afx_msg void OnFilePrintPreview();
 	afx_msg void OnRButtonUp(UINT nFlags, CPoint point);
 	afx_msg void OnContextMenu(CWnd* pWnd, CPoint point);
+	afx_msg void OnMyBN_Click();
 	DECLARE_MESSAGE_MAP()
 };
 
