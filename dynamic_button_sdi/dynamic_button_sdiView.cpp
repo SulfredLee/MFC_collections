@@ -36,10 +36,16 @@ END_MESSAGE_MAP()
 Cdynamic_button_sdiView::Cdynamic_button_sdiView()
 {
 	// TODO: add construction code here
+	m_Button = NULL;
+	m_Button_icon = NULL;
 }
 
 Cdynamic_button_sdiView::~Cdynamic_button_sdiView()
 {
+	if (m_Button != NULL)
+		delete m_Button;
+	if (m_Button_icon != NULL)
+		delete m_Button_icon;
 }
 
 BOOL Cdynamic_button_sdiView::PreCreateWindow(CREATESTRUCT& cs)
@@ -70,11 +76,18 @@ void Cdynamic_button_sdiView::OnInitialUpdate()
 {
 	CView::OnInitialUpdate();
 
-	m_Button.Create(_T("Rearrange"), WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON, CRect(0, 0, 128, 32), this, MYBUTTONID); // here will create a button
+	if (m_Button != NULL)
+		delete m_Button;
+	if (m_Button_icon != NULL)
+		delete m_Button_icon;
+
+	m_Button = new CButton;
+	m_Button->Create(_T("Rearrange"), WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON, CRect(0, 0, 128, 32), this, MYBUTTONID); // here will create a button
 	RepositionButton(); // here will redraw a button and replace the button, this can be used for scrolling view application
 
-	m_Button_icon.Create(_T("My button"), WS_CHILD | WS_VISIBLE | BS_ICON, CRect(10, 42, 45, 76), this, MYBUTTONID_ICON);
-	m_Button_icon.SetIcon(::LoadCursor(NULL, IDC_HAND));
+	m_Button_icon = new CButton;
+	m_Button_icon->Create(_T("My button"), WS_CHILD | WS_VISIBLE | BS_ICON, CRect(10, 42, 45, 76), this, MYBUTTONID_ICON);
+	m_Button_icon->SetIcon(::LoadCursor(NULL, IDC_HAND));
 }
 void Cdynamic_button_sdiView::RepositionButton()
 {
@@ -84,11 +97,11 @@ void Cdynamic_button_sdiView::RepositionButton()
 	y = 10;
 	width = 128;
 	height = 32;
-	m_Button.MoveWindow(x, y, width, height);
+	m_Button->MoveWindow(x, y, width, height);
 }
 void Cdynamic_button_sdiView::OnMyBN_Click()
 {
-	m_Button.EnableWindow(FALSE);
+	m_Button->EnableWindow(FALSE);
 }
 void Cdynamic_button_sdiView::OnFilePrintPreview()
 {

@@ -15,8 +15,8 @@ protected: // create from serialization only
 // Attributes
 public:
 	Cdynamic_button_sdiDoc* GetDocument() const;
-	CButton m_Button;
-	CButton m_Button_icon;
+	CButton * m_Button;
+	CButton * m_Button_icon;
 // Operations
 public:
 	void RepositionButton();
