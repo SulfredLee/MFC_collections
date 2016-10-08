@@ -106,6 +106,7 @@
     <ClInclude Include="FileView.h" />
     <ClInclude Include="MainFrm.h" />
     <ClInclude Include="OutputWnd.h" />
+    <ClInclude Include="PenWidthsDlg.h" />
     <ClInclude Include="PropertiesWnd.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="Scribble.h" />
@@ -121,6 +122,7 @@
     <ClCompile Include="FileView.cpp" />
     <ClCompile Include="MainFrm.cpp" />
     <ClCompile Include="OutputWnd.cpp" />
+    <ClCompile Include="PenWidthsDlg.cpp" />
     <ClCompile Include="PropertiesWnd.cpp" />
     <ClCompile Include="Scribble.cpp" />
     <ClCompile Include="ScribbleDoc.cpp" />

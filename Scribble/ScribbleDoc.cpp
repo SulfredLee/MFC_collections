@@ -26,6 +26,7 @@ BEGIN_MESSAGE_MAP(CScribbleDoc, CDocument)
 	ON_UPDATE_COMMAND_UI(ID_PEN_THICK_OR_THIN, &CScribbleDoc::OnUpdatePenThickOrThin)
 	ON_COMMAND(ID_EDIT_CLEAR_ALL, &CScribbleDoc::OnEditClearAll)
 	ON_UPDATE_COMMAND_UI(ID_EDIT_CLEAR_ALL, &CScribbleDoc::OnUpdateEditClearAll)
+	ON_COMMAND(ID_PEN_WIDTHS, &CScribbleDoc::OnPenWidths)
 END_MESSAGE_MAP()
 
 
@@ -263,4 +264,24 @@ void CScribbleDoc::OnUpdateEditClearAll(CCmdUI *pCmdUI)
 	// Enable the command user interface object (menu item or tool bar
 	// button) if the document is non-empty, i.e., has at least one stroke.
 	pCmdUI->Enable(!m_strokeList.IsEmpty());
+}
+
+
+void CScribbleDoc::OnPenWidths()
+{
+	// TODO: Add your command handler code here
+	CPenWidthsDlg dlg;
+	// Initialize dialog data
+	dlg.m_nThinWidth = m_nThinWidth;
+	dlg.m_nThickWidth = m_nThickWidth;
+	// Invoke the dialog box
+	if (dlg.DoModal() == IDOK)
+	{
+		// retrieve the dialog data
+		m_nThinWidth = dlg.m_nThinWidth;
+		m_nThickWidth = dlg.m_nThickWidth;
+		// Update the pen that is used by views when drawing new strokes,
+		// to reflect the new pen width definitions for "thick" and "thin"
+		ReplacePen();
+	}
 }

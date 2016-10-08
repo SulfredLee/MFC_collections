@@ -4,7 +4,7 @@
 
 
 #pragma once
-
+#include "PenWidthsDlg.h"
 /////////////////////////////////////////////////////////////////////////////
 // class CStroke
 //
@@ -98,4 +98,5 @@ public:
 	afx_msg void OnEditClearAll();
 	afx_msg void OnUpdateEditClearAll(CCmdUI *pCmdUI);
 	DECLARE_MESSAGE_MAP()
+	afx_msg void OnPenWidths();
 };

@@ -84,7 +84,7 @@ BEGIN
     BUTTON      ID_FILE_OPEN
     BUTTON      ID_FILE_SAVE
     SEPARATOR
-	BUTTON      ID_PEN_THICK_OR_THIN
+    BUTTON      ID_PEN_THICK_OR_THIN
     SEPARATOR
     BUTTON      ID_FILE_PRINT
     BUTTON      ID_APP_ABOUT
@@ -197,13 +197,13 @@ BEGIN
         MENUITEM "Cu&t\tCtrl+X",                ID_EDIT_CUT
         MENUITEM "&Copy\tCtrl+C",               ID_EDIT_COPY
         MENUITEM "&Paste\tCtrl+V",              ID_EDIT_PASTE
-		MENUITEM "Clear &All",					ID_EDIT_CLEAR_ALL
+        MENUITEM "Clear &All",                  ID_EDIT_CLEAR_ALL
     END
-	POPUP "&Pen"
-	BEGIN
-		MENUITEM "Thick &Line",					ID_PEN_THICK_OR_THIN
-		MENUITEM "Pen &Widths...",				ID_PEN_WIDTHS
-	END
+    POPUP "&Pen"
+    BEGIN
+        MENUITEM "Thick &Line",                 ID_PEN_THICK_OR_THIN
+        MENUITEM "Pen &Widths...",              ID_PEN_WIDTHS
+    END
     POPUP "&View"
     BEGIN
         POPUP "&Toolbars and Docking Windows"
@@ -248,7 +248,7 @@ BEGIN
         MENUITEM "Cu&t\tCtrl+X",                ID_EDIT_CUT
         MENUITEM "&Copy\tCtrl+C",               ID_EDIT_COPY
         MENUITEM "&Paste\tCtrl+V",              ID_EDIT_PASTE
-		MENUITEM "Clear &All",					ID_EDIT_CLEAR_ALL
+        MENUITEM "Clear &All",                  ID_EDIT_CLEAR_ALL
     END
 END
 
@@ -576,6 +576,51 @@ END
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENG)
 LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_UK
 #pragma code_page(1252)
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_PEN_WIDTHS DIALOGEX 0, 0, 233, 52
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Pen Widths"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,170,3,56,13
+    PUSHBUTTON      "Cancel",IDCANCEL,170,16,56,15
+    PUSHBUTTON      "Default",IDC_BUTTON_PEN_WIDTHS,170,31,56,14
+    LTEXT           "Thin Pen Width:",IDC_STATIC,7,3,58,13
+    LTEXT           "Thick Pen Width:",IDC_STATIC,7,16,58,15
+    EDITTEXT        IDC_THIN_PEN_WIDTH,71,3,93,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_THICK_PEN_WIDTH,71,16,93,12,ES_AUTOHSCROLL
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO
+BEGIN
+    IDD_PEN_WIDTHS, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 226
+        VERTGUIDE, 59
+        VERTGUIDE, 71
+        VERTGUIDE, 164
+        VERTGUIDE, 170
+        TOPMARGIN, 3
+        BOTTOMMARGIN, 45
+        HORZGUIDE, 16
+        HORZGUIDE, 31
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
 
 #ifdef APSTUDIO_INVOKED
 /////////////////////////////////////////////////////////////////////////////
