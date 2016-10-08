@@ -22,6 +22,10 @@
 IMPLEMENT_DYNCREATE(CScribbleDoc, CDocument)
 
 BEGIN_MESSAGE_MAP(CScribbleDoc, CDocument)
+	ON_COMMAND(ID_PEN_THICK_OR_THIN, &CScribbleDoc::OnPenThickOrThin)
+	ON_UPDATE_COMMAND_UI(ID_PEN_THICK_OR_THIN, &CScribbleDoc::OnUpdatePenThickOrThin)
+	ON_COMMAND(ID_EDIT_CLEAR_ALL, &CScribbleDoc::OnEditClearAll)
+	ON_UPDATE_COMMAND_UI(ID_EDIT_CLEAR_ALL, &CScribbleDoc::OnUpdateEditClearAll)
 END_MESSAGE_MAP()
 
 
@@ -67,9 +71,10 @@ void CScribbleDoc::DeleteContents()
 
 void CScribbleDoc::InitDocument()
 {
-	m_nPenWidth = 2; // default 2 pixel pen width
-	// solid, black pen
-	m_penCur.CreatePen(PS_SOLID, m_nPenWidth, RGB(0, 0, 0));
+	m_bThickPen = FALSE;
+	m_nThinWidth = 2;   // default thin pen is 2 pixels wide
+	m_nThickWidth = 5;  // default thick pen is 5 pixels wide
+	ReplacePen();       // initialize pen according to current width
 }
 
 // CScribbleDoc serialization
@@ -212,4 +217,50 @@ BOOL CStroke::DrawStroke(CDC* pDC)
 
 	pDC->SelectObject(pOldPen);
 	return TRUE;
+}
+
+void CScribbleDoc::OnPenThickOrThin()
+{
+	// TODO: Add your command handler code here
+	// Toggle the state of the pen between thin or thick.
+	m_bThickPen = !m_bThickPen;
+
+	// Change the current pen to reflect the new user-specified width.
+	ReplacePen();
+}
+
+void CScribbleDoc::ReplacePen()
+{
+	m_nPenWidth = m_bThickPen ? m_nThickWidth : m_nThinWidth;
+
+	// Change the current pen to reflect the new user-specified width.
+	m_penCur.DeleteObject();
+	m_penCur.CreatePen(PS_SOLID, m_nPenWidth, RGB(0, 0, 0)); // solid black
+}
+
+void CScribbleDoc::OnUpdatePenThickOrThin(CCmdUI *pCmdUI)
+{
+	// TODO: Add your command update UI handler code here
+	// Add check mark to Draw Thick Line menu item, if the current
+	// pen width is "thick".
+	pCmdUI->SetCheck(m_bThickPen);
+}
+
+
+void CScribbleDoc::OnEditClearAll()
+{
+	// TODO: Add your command handler code here
+	DeleteContents();
+	SetModifiedFlag();  // Mark the document as having been modified, for
+	// purposes of confirming File Close.
+	UpdateAllViews(NULL);
+}
+
+
+void CScribbleDoc::OnUpdateEditClearAll(CCmdUI *pCmdUI)
+{
+	// TODO: Add your command update UI handler code here
+	// Enable the command user interface object (menu item or tool bar
+	// button) if the document is non-empty, i.e., has at least one stroke.
+	pCmdUI->Enable(!m_strokeList.IsEmpty());
 }

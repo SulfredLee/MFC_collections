@@ -165,6 +165,9 @@ protected:
 // Implementation
 protected:
 	DECLARE_MESSAGE_MAP()
+public:
+	afx_msg void OnEditClearAll();
+	afx_msg void OnUpdateEditClearAll(CCmdUI *pCmdUI);
 };
 
 CAboutDlg::CAboutDlg() : CDialogEx(CAboutDlg::IDD)
@@ -177,6 +180,8 @@ void CAboutDlg::DoDataExchange(CDataExchange* pDX)
 }
 
 BEGIN_MESSAGE_MAP(CAboutDlg, CDialogEx)
+	ON_COMMAND(ID_EDIT_CLEAR_ALL, &CAboutDlg::OnEditClearAll)
+	ON_UPDATE_COMMAND_UI(ID_EDIT_CLEAR_ALL, &CAboutDlg::OnUpdateEditClearAll)
 END_MESSAGE_MAP()
 
 // App command to run the dialog
@@ -212,3 +217,15 @@ void Cdynamic_button_sdiApp::SaveCustomState()
 
 
 
+
+
+void CAboutDlg::OnEditClearAll()
+{
+	// TODO: Add your command handler code here
+}
+
+
+void CAboutDlg::OnUpdateEditClearAll(CCmdUI *pCmdUI)
+{
+	// TODO: Add your command update UI handler code here
+}

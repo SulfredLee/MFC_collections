@@ -49,6 +49,9 @@ protected:
 	// the view that currently has the focus.
 
 	UINT            m_nPenWidth;        // current user-selected pen width
+	BOOL            m_bThickPen;        // TRUE if current pen is thick
+	UINT            m_nThinWidth;
+	UINT            m_nThickWidth;
 	CPen            m_penCur;           // pen created according to
 	// user-selected pen style (width)
 public:
@@ -80,12 +83,19 @@ public:
 
 protected:
 	void		InitDocument();
+	void ReplacePen();
 // Generated message map functions
 protected:
-	DECLARE_MESSAGE_MAP()
+	
 
 #ifdef SHARED_HANDLERS
 	// Helper function that sets search content for a Search Handler
 	void SetSearchContent(const CString& value);
 #endif // SHARED_HANDLERS
+public:
+	afx_msg void OnPenThickOrThin();
+	afx_msg void OnUpdatePenThickOrThin(CCmdUI *pCmdUI);
+	afx_msg void OnEditClearAll();
+	afx_msg void OnUpdateEditClearAll(CCmdUI *pCmdUI);
+	DECLARE_MESSAGE_MAP()
 };

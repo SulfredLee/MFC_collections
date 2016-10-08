@@ -84,6 +84,8 @@
 #define IDS_FIND_TAB				302
 #define IDS_EXPLORER				305
 #define IDS_EDIT_MENU				306
+#define ID_PEN_THICK_OR_THIN            32772
+#define ID_PEN_WIDTHS                   32773
 
 // Next default values for new objects
 //
