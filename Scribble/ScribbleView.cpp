@@ -63,11 +63,26 @@ void CScribbleView::OnDraw(CDC* pDC)
 		return;
 
 	// TODO: add draw code for native data here
+	// Get the invalidated rectangle of the view, or in the case
+	// of printing, the clipping region of the printer dc.
+	CRect rectClip;
+	CRect rectStroke;
+	pDC->GetClipBox(&rectClip);
+
+	// Note: CScrollView::OnPaint() will have already adjusted the
+	// viewport origin before calling OnDraw(), to reflect the
+	// currently scrolled position.
+
+	// The view delegates the drawing of individual strokes to
+	// CStroke::DrawStroke().
 	CTypedPtrList<CObList, CStroke*>& strokeList = pDoc->m_strokeList;
 	POSITION pos = strokeList.GetHeadPosition();
 	while (pos != NULL)
 	{
 		CStroke* pStroke = strokeList.GetNext(pos);
+		rectStroke = pStroke->GetBoundingRect();
+		if (!rectStroke.IntersectRect(&rectStroke, &rectClip))
+			continue;
 		pStroke->DrawStroke(pDC);
 	}
 }
@@ -172,6 +187,15 @@ void CScribbleView::OnLButtonUp(UINT, CPoint point)
 	dc.SelectObject(pOldPen);
 	m_pStrokeCur->m_pointArray.Add(point);
 
+	// Tell the stroke item that we're done adding points to it.
+	// This is so it can finish computing its bounding rectangle.
+	m_pStrokeCur->FinishStroke();
+
+	// Tell the other views that this stroke has been added
+	// so that they can invalidate this stroke's area in their
+	// client area.
+	pDoc->UpdateAllViews(this, 0L, m_pStrokeCur);
+
 	ReleaseCapture();   // Release the mouse capture established at
 	// the beginning of the mouse drag.
 	return;
@@ -198,4 +222,30 @@ void CScribbleView::OnMouseMove(UINT, CPoint point)
 	dc.SelectObject(pOldPen);
 	m_ptPrev = point;
 	return;
+}
+
+void CScribbleView::OnUpdate(CView* pSender, LPARAM lHint, CObject* pHint)
+{
+	// TODO: Add your specialized code here and/or call the base class
+
+	// The document has informed this view that some data has changed.
+
+	if (pHint != NULL)
+	{
+		if (pHint->IsKindOf(RUNTIME_CLASS(CStroke)))
+		{
+			// The hint is that a stroke as been added (or changed).
+			// So, invalidate its rectangle.
+			CStroke* pStroke = (CStroke*)pHint;
+			CClientDC dc(this);
+			OnPrepareDC(&dc);
+			CRect rectInvalid = pStroke->GetBoundingRect();
+			dc.LPtoDP(&rectInvalid);
+			InvalidateRect(&rectInvalid);
+			return;
+		}
+	}
+	// We can't interpret the hint, so assume that anything might
+	// have been updated.
+	Invalidate(TRUE);
 }

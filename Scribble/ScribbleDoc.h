@@ -22,13 +22,17 @@ protected:
 
 	// Attributes
 protected:
-	UINT                   m_nPenWidth;    // one pen width applies to entire stroke
+	
 public:
+	UINT                   m_nPenWidth;    // one pen width applies to entire stroke
 	CArray<CPoint, CPoint>  m_pointArray;   // series of connected points
+	CRect					m_rectBounding; //smallest rect that surrounds all
 
 	// Operations
 public:
 	BOOL DrawStroke(CDC* pDC);
+	CRect& GetBoundingRect(){ return m_rectBounding; }
+	void FinishStroke();
 
 public:
 	virtual void Serialize(CArchive& ar);
