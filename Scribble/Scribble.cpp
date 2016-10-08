@@ -151,6 +151,7 @@ BOOL CScribbleApp::InitInstance()
 	pMainFrame->ShowWindow(m_nCmdShow);
 	pMainFrame->UpdateWindow();
 
+	//pMainFrame->PostMessage(WM_COMMAND, ID_VIEW_STATUS_BAR, NULL);
 	return TRUE;
 }
 

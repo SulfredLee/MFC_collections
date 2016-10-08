@@ -44,12 +44,33 @@ BOOL CScribbleDoc::OnNewDocument()
 
 	// TODO: add reinitialization code here
 	// (SDI documents will reuse this document)
-
+	InitDocument();
 	return TRUE;
 }
 
+BOOL CScribbleDoc::OnOpenDocument(LPCTSTR lpszPathName)
+{
+	if (!CDocument::OnOpenDocument(lpszPathName))
+		return FALSE;
+	InitDocument();
+	return TRUE;
+}
 
+void CScribbleDoc::DeleteContents()
+{
+	while (!m_strokeList.IsEmpty())
+	{
+		delete m_strokeList.RemoveHead();
+	}
+	CDocument::DeleteContents();
+}
 
+void CScribbleDoc::InitDocument()
+{
+	m_nPenWidth = 2; // default 2 pixel pen width
+	// solid, black pen
+	m_penCur.CreatePen(PS_SOLID, m_nPenWidth, RGB(0, 0, 0));
+}
 
 // CScribbleDoc serialization
 
@@ -63,6 +84,7 @@ void CScribbleDoc::Serialize(CArchive& ar)
 	{
 		// TODO: add loading code here
 	}
+	m_strokeList.Serialize(ar);
 }
 
 #ifdef SHARED_HANDLERS
@@ -135,3 +157,59 @@ void CScribbleDoc::Dump(CDumpContext& dc) const
 
 
 // CScribbleDoc commands
+
+CStroke* CScribbleDoc::NewStroke()
+{
+	CStroke* pStrokeItem = new CStroke(m_nPenWidth);
+	m_strokeList.AddTail(pStrokeItem);
+	SetModifiedFlag();  // Mark the document as having been modified, for
+	// purposes of confirming File Close.
+	return pStrokeItem;
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+// CStroke
+
+IMPLEMENT_SERIAL(CStroke, CObject, 1)
+CStroke::CStroke()
+{
+	// This empty constructor should be used by serialization only
+}
+
+CStroke::CStroke(UINT nPenWidth)
+{
+	m_nPenWidth = nPenWidth;
+}
+
+void CStroke::Serialize(CArchive& ar)
+{
+	if (ar.IsStoring())
+	{
+		ar << (WORD)m_nPenWidth;
+		m_pointArray.Serialize(ar);
+	}
+	else
+	{
+		WORD w;
+		ar >> w;
+		m_nPenWidth = w;
+		m_pointArray.Serialize(ar);
+	}
+}
+
+BOOL CStroke::DrawStroke(CDC* pDC)
+{
+	CPen penStroke;
+	if (!penStroke.CreatePen(PS_SOLID, m_nPenWidth, RGB(0, 0, 0)))
+		return FALSE;
+	CPen* pOldPen = pDC->SelectObject(&penStroke);
+	pDC->MoveTo(m_pointArray[0]);
+	for (int i = 1; i < m_pointArray.GetSize(); i++)
+	{
+		pDC->LineTo(m_pointArray[i]);
+	}
+
+	pDC->SelectObject(pOldPen);
+	return TRUE;
+}
