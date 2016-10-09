@@ -76,6 +76,8 @@ void CScribbleDoc::InitDocument()
 	m_nThinWidth = 2;   // default thin pen is 2 pixels wide
 	m_nThickWidth = 5;  // default thick pen is 5 pixels wide
 	ReplacePen();       // initialize pen according to current width
+	// default document size
+	m_sizeDoc = CSize(800, 900);
 }
 
 // CScribbleDoc serialization
@@ -85,10 +87,12 @@ void CScribbleDoc::Serialize(CArchive& ar)
 	if (ar.IsStoring())
 	{
 		// TODO: add storing code here
+		ar << m_sizeDoc;
 	}
 	else
 	{
 		// TODO: add loading code here
+		ar >> m_sizeDoc;
 	}
 	m_strokeList.Serialize(ar);
 }

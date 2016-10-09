@@ -19,12 +19,12 @@
 
 // CScribbleView
 
-IMPLEMENT_DYNCREATE(CScribbleView, CView)
+IMPLEMENT_DYNCREATE(CScribbleView, CScrollView)
 
-BEGIN_MESSAGE_MAP(CScribbleView, CView)
+BEGIN_MESSAGE_MAP(CScribbleView, CScrollView)
 	// Standard printing commands
-	ON_COMMAND(ID_FILE_PRINT, &CView::OnFilePrint)
-	ON_COMMAND(ID_FILE_PRINT_DIRECT, &CView::OnFilePrint)
+	ON_COMMAND(ID_FILE_PRINT, &CScrollView::OnFilePrint)
+	ON_COMMAND(ID_FILE_PRINT_DIRECT, &CScrollView::OnFilePrint)
 	ON_COMMAND(ID_FILE_PRINT_PREVIEW, &CScribbleView::OnFilePrintPreview)
 	ON_WM_CONTEXTMENU()
 	ON_WM_RBUTTONUP()
@@ -155,6 +155,13 @@ void CScribbleView::OnLButtonDown(UINT, CPoint point)
 {
 	// Pressing the mouse button in the view window starts a new stroke
 
+	// CScrollView changes the viewport origin and mapping mode.
+	// It's necessary to convert the point from device coordinates
+	// to logical coordinates, such as are stored in the document.
+	CClientDC dc(this);
+	OnPrepareDC(&dc);
+	dc.DPtoLP(&point);
+
 	m_pStrokeCur = GetDocument()->NewStroke();
 	// Add first point to the new stroke
 	m_pStrokeCur->m_pointArray.Add(point);
@@ -163,6 +170,7 @@ void CScribbleView::OnLButtonDown(UINT, CPoint point)
 	m_ptPrev = point;   // Serves as the MoveTo() anchor point for the
 	// LineTo() the next point, as the user drags the
 	// mouse.
+
 
 	return;
 }
@@ -180,6 +188,12 @@ void CScribbleView::OnLButtonUp(UINT, CPoint point)
 	CScribbleDoc* pDoc = GetDocument();
 
 	CClientDC dc(this);
+
+	// CScrollView changes the viewport origin and mapping mode.
+	// It's necessary to convert the point from device coordinates
+	// to logical coordinates, such as are stored in the document.
+	OnPrepareDC(&dc);  // set up mapping mode and viewport origin
+	dc.DPtoLP(&point);
 
 	CPen* pOldPen = dc.SelectObject(pDoc->GetCurrentPen());
 	dc.MoveTo(m_ptPrev);
@@ -212,6 +226,12 @@ void CScribbleView::OnMouseMove(UINT, CPoint point)
 	// then the user isn't drawing in this window.
 
 	CClientDC dc(this);
+	// CScrollView changes the viewport origin and mapping mode.
+	// It's necessary to convert the point from device coordinates
+	// to logical coordinates, such as are stored in the document.
+	OnPrepareDC(&dc);
+	dc.DPtoLP(&point);
+
 	m_pStrokeCur->m_pointArray.Add(point);
 
 	// Draw a line from the previous detected point in the mouse
@@ -248,4 +268,13 @@ void CScribbleView::OnUpdate(CView* pSender, LPARAM lHint, CObject* pHint)
 	// We can't interpret the hint, so assume that anything might
 	// have been updated.
 	Invalidate(TRUE);
+}
+
+
+void CScribbleView::OnInitialUpdate()
+{
+	CScrollView::OnInitialUpdate();
+
+	// TODO: Add your specialized code here and/or call the base class
+	SetScrollSizes(MM_TEXT, GetDocument()->GetDocSize());
 }

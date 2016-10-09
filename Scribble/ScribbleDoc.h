@@ -57,10 +57,12 @@ protected:
 	UINT            m_nThinWidth;
 	UINT            m_nThickWidth;
 	CPen            m_penCur;           // pen created according to
+	CSize			m_sizeDoc;
 	// user-selected pen style (width)
 public:
 	CTypedPtrList<CObList, CStroke*>     m_strokeList;
 	CPen*           GetCurrentPen() { return &m_penCur; }
+	CSize			GetDocSize(){ return m_sizeDoc; }
 
 	// Operations
 public:

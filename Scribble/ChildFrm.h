@@ -3,6 +3,7 @@
 //
 
 #pragma once
+#include "afxext.h"
 
 class CChildFrame : public CMDIChildWndEx
 {
@@ -30,4 +31,6 @@ public:
 // Generated message map functions
 protected:
 	DECLARE_MESSAGE_MAP()
+	CSplitterWnd m_wndSplitter;
+	virtual BOOL OnCreateClient(LPCREATESTRUCT lpcs, CCreateContext* pContext);
 };

@@ -5,7 +5,7 @@
 #pragma once
 
 
-class CScribbleView : public CView
+class CScribbleView : public CScrollView
 {
 protected: // create from serialization only
 	CScribbleView();
@@ -51,6 +51,8 @@ protected:
 	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
 	DECLARE_MESSAGE_MAP()
 	virtual void OnUpdate(CView* /*pSender*/, LPARAM /*lHint*/, CObject* /*pHint*/);
+public:
+	virtual void OnInitialUpdate();
 };
 
 #ifndef _DEBUG  // debug version in ScribbleView.cpp
