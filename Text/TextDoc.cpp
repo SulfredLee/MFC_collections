@@ -44,7 +44,17 @@ BOOL CTextDoc::OnNewDocument()
 
 	// TODO: add reinitialization code here
 	// (SDI documents will reuse this document)
-
+	m_stringArray.SetSize(10);
+	m_stringArray[0] = "If you love me let me know,  ";
+	m_stringArray[1] = "if you don't then let me go, ";
+	m_stringArray[2] = "I can take another minute    ";
+	m_stringArray[3] = "  of day without you in it.  ";
+	m_stringArray[4] = "                             ";
+	m_stringArray[5] = "If you love me let it be,    ";
+	m_stringArray[6] = "if you don't then set me free";
+	m_stringArray[7] = "...                          ";
+	m_stringArray[8] = "SORRY, I FORGET IT!          ";
+	m_stringArray[9] = "           J.J.Hou 1995.03.22  19:26";
 	return TRUE;
 }
 

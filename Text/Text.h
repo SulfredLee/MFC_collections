@@ -19,7 +19,8 @@ class CTextApp : public CWinAppEx
 public:
 	CTextApp();
 
-
+	CMultiDocTemplate* m_pTemplateTxt;
+	CMultiDocTemplate* m_pTemplateHex;
 // Overrides
 public:
 	virtual BOOL InitInstance();

@@ -14,7 +14,7 @@ protected: // create from serialization only
 
 // Attributes
 public:
-
+	CStringArray m_stringArray;
 // Operations
 public:
 

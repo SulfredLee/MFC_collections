@@ -27,6 +27,8 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWndEx)
 	ON_COMMAND_RANGE(ID_VIEW_APPLOOK_WIN_2000, ID_VIEW_APPLOOK_WINDOWS_7, &CMainFrame::OnApplicationLook)
 	ON_UPDATE_COMMAND_UI_RANGE(ID_VIEW_APPLOOK_WIN_2000, ID_VIEW_APPLOOK_WINDOWS_7, &CMainFrame::OnUpdateApplicationLook)
 	ON_WM_SETTINGCHANGE()
+	ON_COMMAND(ID_WINDOW_TEXT, &CMainFrame::OnWindowText)
+	ON_COMMAND(ID_WINDOW_HEX, &CMainFrame::OnWindowHex)
 END_MESSAGE_MAP()
 
 static UINT indicators[] =
@@ -413,4 +415,60 @@ void CMainFrame::OnSettingChange(UINT uFlags, LPCTSTR lpszSection)
 {
 	CMDIFrameWndEx::OnSettingChange(uFlags, lpszSection);
 	m_wndOutput.UpdateFonts();
+}
+
+
+void CMainFrame::OnWindowText()
+{
+	// TODO: Add your command handler code here
+	CMDIChildWnd* pActiveChild = MDIGetActive();
+	CDocument* pDocument;
+	if (pActiveChild == NULL ||
+		(pDocument = pActiveChild->GetActiveDocument()) == NULL)
+	{
+		TRACE0("Warning: No active document for WindowNew command\n");
+		AfxMessageBox(AFX_IDP_COMMAND_FAILURE);
+		return;     // command failed
+	}
+
+	// otherwise we have a new frame!
+	CDocTemplate* pTemplate = ((CTextApp*)AfxGetApp())->m_pTemplateTxt;
+	ASSERT_VALID(pTemplate);
+	CFrameWnd* pFrame = pTemplate->CreateNewFrame(pDocument, pActiveChild);
+	if (pFrame == NULL)
+	{
+		TRACE0("Warning: failed to create new frame\n");
+		AfxMessageBox(AFX_IDP_COMMAND_FAILURE);
+		return;     // command failed
+	}
+
+	pTemplate->InitialUpdateFrame(pFrame, pDocument);
+}
+
+
+void CMainFrame::OnWindowHex()
+{
+	// TODO: Add your command handler code here
+	CMDIChildWnd* pActiveChild = MDIGetActive();
+	CDocument* pDocument;
+	if (pActiveChild == NULL ||
+		(pDocument = pActiveChild->GetActiveDocument()) == NULL)
+	{
+		TRACE0("Warning: No active document for WindowNew command\n");
+		AfxMessageBox(AFX_IDP_COMMAND_FAILURE);
+		return;     // command failed
+	}
+
+	// otherwise we have a new frame!
+	CDocTemplate* pTemplate = ((CTextApp*)AfxGetApp())->m_pTemplateHex;
+	ASSERT_VALID(pTemplate);
+	CFrameWnd* pFrame = pTemplate->CreateNewFrame(pDocument, pActiveChild);
+	if (pFrame == NULL)
+	{
+		TRACE0("Warning: failed to create new frame\n");
+		AfxMessageBox(AFX_IDP_COMMAND_FAILURE);
+		return;     // command failed
+	}
+
+	pTemplate->InitialUpdateFrame(pFrame, pDocument);
 }

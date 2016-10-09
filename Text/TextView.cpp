@@ -52,7 +52,7 @@ BOOL CTextView::PreCreateWindow(CREATESTRUCT& cs)
 
 // CTextView drawing
 
-void CTextView::OnDraw(CDC* /*pDC*/)
+void CTextView::OnDraw(CDC* pDC)
 {
 	CTextDoc* pDoc = GetDocument();
 	ASSERT_VALID(pDoc);
@@ -60,6 +60,16 @@ void CTextView::OnDraw(CDC* /*pDC*/)
 		return;
 
 	// TODO: add draw code for native data here
+	int i, j, nHeight;
+	TEXTMETRIC tm;
+
+	pDC->GetTextMetrics(&tm);
+	nHeight = tm.tmHeight + tm.tmExternalLeading;
+
+	j = pDoc->m_stringArray.GetSize();
+	for (i = 0; i < j; i++) {
+		pDC->TextOut(10, i*nHeight, pDoc->m_stringArray[i]);
+	}
 }
 
 

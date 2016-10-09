@@ -57,6 +57,9 @@
     <ClInclude Include="PropertiesWnd.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="HexView.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Text.cpp">
@@ -90,6 +93,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="PropertiesWnd.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="HexView.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

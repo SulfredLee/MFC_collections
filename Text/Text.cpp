@@ -11,6 +11,7 @@
 #include "ChildFrm.h"
 #include "TextDoc.h"
 #include "TextView.h"
+#include "HexView.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -112,13 +113,23 @@ BOOL CTextApp::InitInstance()
 	// Register the application's document templates.  Document templates
 	//  serve as the connection between documents, frame windows and views
 	CMultiDocTemplate* pDocTemplate;
-	pDocTemplate = new CMultiDocTemplate(IDR_TextTYPE,
+	pDocTemplate = new CMultiDocTemplate(
+		IDR_TextTYPE,
 		RUNTIME_CLASS(CTextDoc),
 		RUNTIME_CLASS(CChildFrame), // custom MDI child frame
 		RUNTIME_CLASS(CTextView));
 	if (!pDocTemplate)
 		return FALSE;
 	AddDocTemplate(pDocTemplate);
+
+	m_pTemplateTxt = new CMultiDocTemplate(IDR_TextTYPE,
+		RUNTIME_CLASS(CTextDoc),
+		RUNTIME_CLASS(CChildFrame), // custom MDI child frame
+		RUNTIME_CLASS(CTextView));
+	m_pTemplateHex = new CMultiDocTemplate(IDR_TextTYPE,
+		RUNTIME_CLASS(CTextDoc),
+		RUNTIME_CLASS(CChildFrame), // custom MDI child frame
+		RUNTIME_CLASS(CHexView));
 
 	// create main MDI Frame window
 	CMainFrame* pMainFrame = new CMainFrame;
@@ -158,7 +169,8 @@ int CTextApp::ExitInstance()
 {
 	//TODO: handle additional resources you may have added
 	AfxOleTerm(FALSE);
-
+	delete m_pTemplateHex;
+	delete m_pTemplateTxt;
 	return CWinAppEx::ExitInstance();
 }
 
