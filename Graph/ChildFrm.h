@@ -12,7 +12,8 @@ public:
 
 // Attributes
 protected:
-	CSplitterWnd m_wndSplitter;
+	CSplitterWnd m_wndSplitter1;
+	CSplitterWnd m_wndSplitter2;
 public:
 
 // Operations

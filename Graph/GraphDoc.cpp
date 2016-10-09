@@ -22,6 +22,12 @@
 IMPLEMENT_DYNCREATE(CGraphDoc, CDocument)
 
 BEGIN_MESSAGE_MAP(CGraphDoc, CDocument)
+	ON_COMMAND(ID_GRAPH_DATA1, &CGraphDoc::OnGraphData1)
+	ON_UPDATE_COMMAND_UI(ID_GRAPH_DATA1, &CGraphDoc::OnUpdateGraphData1)
+	ON_COMMAND(ID_GRAPH_DATA2, &CGraphDoc::OnGraphData2)
+	ON_UPDATE_COMMAND_UI(ID_GRAPH_DATA2, &CGraphDoc::OnUpdateGraphData2)
+	ON_COMMAND(ID_GRAPH_DATA3, &CGraphDoc::OnGraphData3)
+	ON_UPDATE_COMMAND_UI(ID_GRAPH_DATA3, &CGraphDoc::OnUpdateGraphData3)
 END_MESSAGE_MAP()
 
 
@@ -30,7 +36,7 @@ END_MESSAGE_MAP()
 CGraphDoc::CGraphDoc()
 {
 	// TODO: add one-time construction code here
-
+	SetValue(5, 10, 15, 20, 25, 78, 64, 38, 29, 9);
 }
 
 CGraphDoc::~CGraphDoc()
@@ -49,7 +55,21 @@ BOOL CGraphDoc::OnNewDocument()
 }
 
 
-
+void CGraphDoc::SetValue(int i0, int i1, int i2, int i3, int i4,
+	int i5, int i6, int i7, int i8, int i9)
+{
+	m_intArray.SetSize(DATANUM, 0);
+	m_intArray[0] = i0;
+	m_intArray[1] = i1;
+	m_intArray[2] = i2;
+	m_intArray[3] = i3;
+	m_intArray[4] = i4;
+	m_intArray[5] = i5;
+	m_intArray[6] = i6;
+	m_intArray[7] = i7;
+	m_intArray[8] = i8;
+	m_intArray[9] = i9;
+}
 
 // CGraphDoc serialization
 
@@ -135,3 +155,48 @@ void CGraphDoc::Dump(CDumpContext& dc) const
 
 
 // CGraphDoc commands
+
+
+void CGraphDoc::OnGraphData1()
+{
+	// TODO: Add your command handler code here
+	SetValue(5, 10, 15, 20, 25, 78, 64, 38, 29, 9);
+	UpdateAllViews(NULL);
+}
+
+
+void CGraphDoc::OnUpdateGraphData1(CCmdUI *pCmdUI)
+{
+	// TODO: Add your command update UI handler code here
+	pCmdUI->SetCheck(m_intArray[0] == 5);
+}
+
+
+void CGraphDoc::OnGraphData2()
+{
+	// TODO: Add your command handler code here
+	SetValue(50, 60, 70, 80, 90, 23, 68, 39, 73, 58);
+	UpdateAllViews(NULL);
+}
+
+
+void CGraphDoc::OnUpdateGraphData2(CCmdUI *pCmdUI)
+{
+	// TODO: Add your command update UI handler code here
+	pCmdUI->SetCheck(m_intArray[0] == 50);
+}
+
+
+void CGraphDoc::OnGraphData3()
+{
+	// TODO: Add your command handler code here
+	SetValue(12, 20, 8, 17, 28, 37, 93, 45, 78, 29);
+	UpdateAllViews(NULL);
+}
+
+
+void CGraphDoc::OnUpdateGraphData3(CCmdUI *pCmdUI)
+{
+	// TODO: Add your command update UI handler code here
+	pCmdUI->SetCheck(m_intArray[0] == 12);
+}

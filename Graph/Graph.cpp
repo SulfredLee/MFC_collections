@@ -11,6 +11,7 @@
 #include "ChildFrm.h"
 #include "GraphDoc.h"
 #include "GraphView.h"
+#include "NewDoc.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -116,6 +117,13 @@ BOOL CGraphApp::InitInstance()
 		RUNTIME_CLASS(CGraphDoc),
 		RUNTIME_CLASS(CChildFrame), // custom MDI child frame
 		RUNTIME_CLASS(CGraphView));
+	if (!pDocTemplate)
+		return FALSE;
+	AddDocTemplate(pDocTemplate);
+	pDocTemplate = new CMultiDocTemplate(IDR_NEWTYPE,
+		RUNTIME_CLASS(CNewDoc),
+		RUNTIME_CLASS(CMDIChildWnd), // use directly
+		RUNTIME_CLASS(CEditView));
 	if (!pDocTemplate)
 		return FALSE;
 	AddDocTemplate(pDocTemplate);

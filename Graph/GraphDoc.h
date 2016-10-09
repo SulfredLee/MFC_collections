@@ -14,10 +14,11 @@ protected: // create from serialization only
 
 // Attributes
 public:
-
+	CArray<int, int> m_intArray;
 // Operations
 public:
-
+	void SetValue(int i0, int i1, int i2, int i3, int i4,
+		int i5, int i6, int i7, int i8, int i9);
 // Overrides
 public:
 	virtual BOOL OnNewDocument();
@@ -45,4 +46,11 @@ protected:
 	// Helper function that sets search content for a Search Handler
 	void SetSearchContent(const CString& value);
 #endif // SHARED_HANDLERS
+public:
+	afx_msg void OnGraphData1();
+	afx_msg void OnUpdateGraphData1(CCmdUI *pCmdUI);
+	afx_msg void OnGraphData2();
+	afx_msg void OnUpdateGraphData2(CCmdUI *pCmdUI);
+	afx_msg void OnGraphData3();
+	afx_msg void OnUpdateGraphData3(CCmdUI *pCmdUI);
 };

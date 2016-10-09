@@ -52,7 +52,7 @@ BOOL CGraphView::PreCreateWindow(CREATESTRUCT& cs)
 
 // CGraphView drawing
 
-void CGraphView::OnDraw(CDC* /*pDC*/)
+void CGraphView::OnDraw(CDC* pDC)
 {
 	CGraphDoc* pDoc = GetDocument();
 	ASSERT_VALID(pDoc);
@@ -60,6 +60,49 @@ void CGraphView::OnDraw(CDC* /*pDC*/)
 		return;
 
 	// TODO: add draw code for native data here
+	int          cxDot, cxDotSpacing, cyDot, cxGraph, cyGraph, x, y, i;
+	RECT         rc;
+
+	CPen   pen(PS_SOLID, 1, RGB(255, 0, 0)); // red pen
+	CBrush brush(RGB(255, 0, 0));             // red brush
+	CBrush* pOldBrush = pDC->SelectObject(&brush);
+	CPen*   pOldPen = pDC->SelectObject(&pen);
+
+	cxGraph = 100;
+	cyGraph = DATAMAX;  // defined in resource.h
+
+	this->GetClientRect(&rc);
+	pDC->SetMapMode(MM_ANISOTROPIC);
+	pDC->SetWindowOrg(0, 0);
+	pDC->SetViewportOrg(10, rc.bottom - 10);
+	pDC->SetWindowExt(cxGraph, cyGraph);
+	pDC->SetViewportExt(rc.right - 20, -(rc.bottom - 20));
+
+	// 我們希望圖形佔滿視窗的整個可用空間（以水平方向為準）
+	// 並希望曲線點的寬度是點間距寬度的 1.2，
+	// 所以 (dot_spacing + dot_width) * num_datapoints = graph_width
+	// 亦即 dot_spacing * 3/2  * num_datapoints = graph_width
+	// 亦即 dot_spacing = graph_width / num_datapoints * 2/3
+
+	cxDotSpacing = (2 * cxGraph) / (3 * DATANUM);
+	cxDot = cxDotSpacing / 2;
+	if (cxDot<3)  cxDot = 3;
+	cyDot = cxDot;
+
+	// 座標軸
+	pDC->MoveTo(0, 0);
+	pDC->LineTo(0, cyGraph);
+	pDC->MoveTo(0, 0);
+	pDC->LineTo(cxGraph, 0);
+
+	// 畫出資料點
+	pDC->SelectObject(::GetStockObject(NULL_PEN));
+	for (x = 0 + cxDotSpacing, y = 0, i = 0; i<DATANUM; i++, x += cxDot + cxDotSpacing)
+		pDC->Rectangle(x, y + pDoc->m_intArray[i],
+		x + cxDot, y + pDoc->m_intArray[i] - cyDot);
+
+	pDC->SelectObject(pOldBrush);
+	pDC->SelectObject(pOldPen);
 }
 
 
