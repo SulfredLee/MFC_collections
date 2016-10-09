@@ -23,8 +23,8 @@ IMPLEMENT_DYNCREATE(CScribbleView, CScrollView)
 
 BEGIN_MESSAGE_MAP(CScribbleView, CScrollView)
 	// Standard printing commands
-	ON_COMMAND(ID_FILE_PRINT, &CScrollView::OnFilePrint)
-	ON_COMMAND(ID_FILE_PRINT_DIRECT, &CScrollView::OnFilePrint)
+	ON_COMMAND(ID_FILE_PRINT, &CScribbleView::OnFilePrint)
+	ON_COMMAND(ID_FILE_PRINT_DIRECT, &CScribbleView::OnFilePrint)
 	ON_COMMAND(ID_FILE_PRINT_PREVIEW, &CScribbleView::OnFilePrintPreview)
 	ON_WM_CONTEXTMENU()
 	ON_WM_RBUTTONUP()
@@ -38,7 +38,6 @@ END_MESSAGE_MAP()
 CScribbleView::CScribbleView()
 {
 	// TODO: add construction code here
-
 }
 
 CScribbleView::~CScribbleView()
@@ -68,6 +67,8 @@ void CScribbleView::OnDraw(CDC* pDC)
 	CRect rectClip;
 	CRect rectStroke;
 	pDC->GetClipBox(&rectClip);
+	pDC->LPtoDP(&rectClip);
+	rectClip.InflateRect(1, 1); // avoid rounding to nothing
 
 	// Note: CScrollView::OnPaint() will have already adjusted the
 	// viewport origin before calling OnDraw(), to reflect the
@@ -81,6 +82,8 @@ void CScribbleView::OnDraw(CDC* pDC)
 	{
 		CStroke* pStroke = strokeList.GetNext(pos);
 		rectStroke = pStroke->GetBoundingRect();
+		pDC->LPtoDP(&rectStroke);
+		rectStroke.InflateRect(1, 1); // avoid rounding to nothing
 		if (!rectStroke.IntersectRect(&rectStroke, &rectClip))
 			continue;
 		pStroke->DrawStroke(pDC);
@@ -100,8 +103,14 @@ void CScribbleView::OnFilePrintPreview()
 
 BOOL CScribbleView::OnPreparePrinting(CPrintInfo* pInfo)
 {
-	// default preparation
-	return DoPreparePrinting(pInfo);
+	pInfo->SetMaxPage(2);   // the document is two pages long:
+	// the first page is the title page
+	// the second is the drawing
+	BOOL bRet = DoPreparePrinting(pInfo);	// default preparation
+	pInfo->m_nNumPreviewPages = 2;  // Preview 2 pages at a time
+	// Set this value after calling DoPreparePrinting to override
+	// value read from .INI file
+	return bRet;
 }
 
 void CScribbleView::OnBeginPrinting(CDC* /*pDC*/, CPrintInfo* /*pInfo*/)
@@ -276,5 +285,68 @@ void CScribbleView::OnInitialUpdate()
 	CScrollView::OnInitialUpdate();
 
 	// TODO: Add your specialized code here and/or call the base class
-	SetScrollSizes(MM_TEXT, GetDocument()->GetDocSize());
+	SetScrollSizes(MM_LOENGLISH, GetDocument()->GetDocSize());
+}
+
+void CScribbleView::OnPrint(CDC* pDC, CPrintInfo* pInfo)
+{
+	if (pInfo->m_nCurPage == 1)  // page no. 1 is the title page
+	{
+		PrintTitlePage(pDC, pInfo);
+		return; // nothing else to print on page 1 but the page title
+	}
+	CString strHeader = GetDocument()->GetTitle();
+
+	PrintPageHeader(pDC, pInfo, strHeader);
+	// PrintPageHeader() subtracts out from the pInfo->m_rectDraw the
+	// amount of the page used for the header.
+
+	pDC->SetWindowOrg(pInfo->m_rectDraw.left, -pInfo->m_rectDraw.top);
+
+	// Now print the rest of the page
+	OnDraw(pDC);
+}
+
+void CScribbleView::PrintTitlePage(CDC* pDC, CPrintInfo* pInfo)
+{
+	// Prepare a font size for displaying the file name
+	LOGFONT logFont;
+	memset(&logFont, 0, sizeof(LOGFONT));
+	logFont.lfHeight = 75;  //  3/4th inch high in MM_LOENGLISH
+	// (1/100th inch)
+	CFont font;
+	CFont* pOldFont = NULL;
+	if (font.CreateFontIndirect(&logFont))
+		pOldFont = pDC->SelectObject(&font);
+
+	// Get the file name, to be displayed on title page
+	CString strPageTitle = GetDocument()->GetTitle();
+
+	// Display the file name 1 inch below top of the page,
+	// centered horizontally
+	pDC->SetTextAlign(TA_CENTER);
+	pDC->TextOut(pInfo->m_rectDraw.right / 2, -100, strPageTitle);
+
+	if (pOldFont != NULL)
+		pDC->SelectObject(pOldFont);
+}
+
+void CScribbleView::PrintPageHeader(CDC* pDC, CPrintInfo* pInfo,
+	CString& strHeader)
+{
+	// Print a page header consisting of the name of
+	// the document and a horizontal line
+	pDC->SetTextAlign(TA_LEFT);
+	pDC->TextOut(0, -25, strHeader);  // 1/4 inch down
+
+	// Draw a line across the page, below the header
+	TEXTMETRIC textMetric;
+	pDC->GetTextMetrics(&textMetric);
+	int y = -35 - textMetric.tmHeight;          // line 1/10th inch below text
+	pDC->MoveTo(0, y);                          // from left margin
+	pDC->LineTo(pInfo->m_rectDraw.right, y);    // to right margin
+
+	// Subtract out from the drawing rectange the space used by the header.
+	y -= 25;    // space 1/4 inch below (top of) line
+	pInfo->m_rectDraw.top += y;
 }

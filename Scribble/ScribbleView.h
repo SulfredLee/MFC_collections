@@ -33,6 +33,8 @@ protected:
 
 // Implementation
 public:
+	void PrintTitlePage(CDC* pDC, CPrintInfo* pInfo);
+	void PrintPageHeader(CDC* pDC, CPrintInfo* pInfo, CString& strHeader);
 	virtual ~CScribbleView();
 #ifdef _DEBUG
 	virtual void AssertValid() const;
@@ -53,6 +55,7 @@ protected:
 	virtual void OnUpdate(CView* /*pSender*/, LPARAM /*lHint*/, CObject* /*pHint*/);
 public:
 	virtual void OnInitialUpdate();
+	virtual void OnPrint(CDC* pDC, CPrintInfo* pInfo);
 };
 
 #ifndef _DEBUG  // debug version in ScribbleView.cpp

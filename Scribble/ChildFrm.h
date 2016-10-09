@@ -5,6 +5,7 @@
 #pragma once
 #include "afxext.h"
 
+
 class CChildFrame : public CMDIChildWndEx
 {
 	DECLARE_DYNCREATE(CChildFrame)
